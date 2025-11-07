@@ -16,7 +16,7 @@ public class Guardian {
     @Column(nullable = false, length = 50)
     private String lastName;
 
-    @Column(length = 100)
+    @Column(unique=true,length = 100)
     private String email;
 
     @Column(length = 20)

@@ -25,7 +25,7 @@ public class Student {
     @Column(length = 250)
     private String address;
 
-    @Column(length = 100)
+    @Column(unique=true,length = 100)
     private String email;
 
     @Column(length = 20)

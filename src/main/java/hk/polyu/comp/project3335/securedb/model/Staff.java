@@ -11,9 +11,6 @@ public class Staff {
     private Long id;
 
     @Column(nullable = false, length = 50)
-    private String password;
-
-    @Column(nullable = false, length = 50)
     private String firstName;
 
     @Column(nullable = false, length = 50)
@@ -28,7 +25,7 @@ public class Staff {
     @Column(length = 250)
     private String address;
 
-    @Column(length = 100)
+    @Column(unique=true,length = 100)
     private String email;
 
     @Column(length = 20)
@@ -41,10 +38,9 @@ public class Staff {
     public Staff() {
     }
 
-    public Staff(String password, String firstName, String lastName, String gender,
+    public Staff(String firstName, String lastName, String gender,
                  String identificationNumber, String address, String email,
                  String phone, String department, String role) {
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
@@ -54,14 +50,6 @@ public class Staff {
         this.phone = phone;
         this.department = department;
         this.role = role;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
