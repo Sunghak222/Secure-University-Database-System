@@ -10,7 +10,7 @@ public class AuthUser {
     private Long id;
 
     @Column(nullable=false, unique=true, length=100)
-    private String username;
+    private String email;
 
     @Column(nullable=false, length=100)
     private String passwordHash;
@@ -22,4 +22,64 @@ public class AuthUser {
     private Long studentId;
 
     private Boolean enabled = true;
+
+    public AuthUser() {
+
+    }
+    public AuthUser(String email, String passwordHash, String role, Long staffId, Long studentId, Boolean enabled) {
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.role = role;
+        this.staffId = staffId;
+        this.studentId = studentId;
+        this.enabled = enabled;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Long getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
+    }
+
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 }

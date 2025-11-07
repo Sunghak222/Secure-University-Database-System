@@ -10,14 +10,25 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 10)
+    private String code;
+
     @Column(nullable = false, length = 50)
     private String courseName;
 
     public Course() {
     }
 
-    public Course(String courseName) {
+    public Course(String code, String courseName) {
         this.courseName = courseName;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getCourseName() {
