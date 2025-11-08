@@ -1,6 +1,7 @@
 package hk.polyu.comp.project3335.securedb.service;
 
 import hk.polyu.comp.project3335.securedb.model.Guardian;
+import hk.polyu.comp.project3335.securedb.model.Student;
 import hk.polyu.comp.project3335.securedb.repository.GuardianRepository;
 import hk.polyu.comp.project3335.securedb.repository.StudentRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,5 +23,28 @@ public class GuardianService {
     }
     public Optional<Guardian> findByEmail(String email) {
         return guardianRepository.findByEmail(email);
+    }
+
+    public Optional<Guardian> getOneById(String id) {
+        return guardianRepository.findById(id);
+    }
+
+    public Optional<Guardian> updateOneById(String id, Guardian updatedGuardian) {
+        return guardianRepository.findById(id).map(existingGuardian -> {
+            // Only update fields that are not null (partial update)
+            if (updatedGuardian.getFirstName() != null) {
+                existingGuardian.setFirstName(updatedGuardian.getFirstName());
+            }
+            if (updatedGuardian.getLastName() != null) {
+                existingGuardian.setLastName(updatedGuardian.getLastName());
+            }
+            if (updatedGuardian.getEmail() != null) {
+                existingGuardian.setEmail(updatedGuardian.getEmail());
+            }
+            if (updatedGuardian.getPhone() != null) {
+                existingGuardian.setPhone(updatedGuardian.getPhone());
+            }
+            return guardianRepository.save(existingGuardian);
+        });
     }
 }

@@ -26,8 +26,12 @@ public class GradeService {
         g.setGrade(grade);
         g.setComments(comments);
         return gradeRepository.save(g);
-    }
+    } 
+
     public void delete(Long id) {
+        if (!gradeRepository.existsById(id)) {
+            throw new IllegalArgumentException("Grade not found");
+        }
         gradeRepository.deleteById(id);
     }
     public List<Grade> listByStudent(Long studentId) {
@@ -36,4 +40,9 @@ public class GradeService {
     public List<Grade> listByStudentAndTerm(Long studentId, String term) {
         return gradeRepository.findByStudentIdAndTerm(studentId, term);
     }
+
+    public List<Grade> listAll() {
+        return gradeRepository.findAll();
+    }
+
 }
