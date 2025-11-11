@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h2>Welcome, Student</h2>
+            <button id="logoutBtn">Logout</button>
+        </header>
+
+        <section class="dashboard-section">
+            <h3>👤 Personal Information</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Student ID</th>
+                    <td id="student_id"></td>
+                </tr>
+                <tr>
+                    <th>First Name</th>
+                    <td id="first_name"></td>
+                </tr>
+                <tr>
+                    <th>Last Name</th>
+                    <td id="last_name"></td>
+                </tr>
+                <tr>
+                    <th>Gender</th>
+                    <td id="gender"></td>
+                </tr>
+                <tr>
+                    <th>Identification Number</th>
+                    <td id="identification_number"></td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td id="address"></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td id="email"></td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td id="phone"></td>
+                </tr>
+                <tr>
+                    <th>Enrollment Year</th>
+                    <td id="enrollment_year"></td>
+                </tr>
+                <tr>
+                    <th>Guardian Relationship</th>
+                    <td id="guardian_relation"></td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="dashboard-section">
+            <h3>⚠️ Disciplinary Records</h3>
+            <table class="info-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="disciplinary_table">
+                    <!-- JS will inject rows here -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="student.js"></script>
+</body>
+
+</html>

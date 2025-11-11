@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DRO Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h2>Welcome, DRO</h2>
+            <button id="logoutBtn">Logout</button>
+        </header>
+
+        <section class="dashboard-section">
+            <h3>🔍 Search Disciplinary Records</h3>
+            <form id="searchForm">
+                <input type="text" id="search_student_id" placeholder="Student ID" pattern="\d{6}" maxlength="6" />
+                <input type="text" id="search_reason" placeholder="Reason" maxlength="100" />
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+        <section class="dashboard-section">
+            <h3>📋 Disciplinary Records</h3>
+            <table class="info-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Date</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="records_table">
+                    <!-- JS will inject rows here -->
+                </tbody>
+            </table>
+        </section>
+
+        <section class="dashboard-section">
+            <h3>➕ Add New Record</h3>
+            <form id="addRecordForm">
+                <input type="text" id="new_student_id" placeholder="Student ID" required pattern="\d{6}"
+                    maxlength="6" />
+                <input type="date" id="new_date" required />
+                <input type="text" id="new_reason" placeholder="Reason" required maxlength="100" />
+                <input type="text" id="new_status" placeholder="Status" required maxlength="50" />
+                <button type="submit">Add Record</button>
+            </form>
+        </section>
+
+        <section class="dashboard-section" id="editRecordSection" style="display: none;">
+            <h3>✏️ Edit Record</h3>
+            <form id="editRecordForm">
+                <input type="hidden" id="edit_record_id" />
+                <input type="text" id="edit_student_id" placeholder="Student ID" readonly />
+                <input type="date" id="edit_date" required />
+                <input type="text" id="edit_reason" placeholder="Reason" required maxlength="100" />
+                <input type="text" id="edit_status" placeholder="Status" required maxlength="50" />
+                <button type="submit">Update Record</button>
+                <button type="button" id="cancelEditBtn">Cancel</button>
+            </form>
+        </section>
+    </div>
+
+    <script src="dro.js"></script>
+</body>
+
+</html>

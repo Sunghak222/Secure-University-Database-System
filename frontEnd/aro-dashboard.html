@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ARO Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h2>Welcome, ARO</h2>
+            <button id="logoutBtn">Logout</button>
+        </header>
+
+        <section class="dashboard-section">
+            <h3>🔍 Search Student Grades</h3>
+            <form id="searchForm">
+                <input type="text" id="search_student_id" placeholder="Student ID" />
+                <input type="text" id="search_course" placeholder="Course Code" />
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+        <section class="dashboard-section">
+            <h3>📋 Grade Records</h3>
+            <table class="info-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Course</th>
+                        <th>Grade</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="grades_table">
+                    <!-- JS will inject rows here -->
+                </tbody>
+            </table>
+        </section>
+
+        <section class="dashboard-section">
+            <h3>➕ Add New Grade</h3>
+            <form id="addGradeForm">
+                <input type="text" id="new_student_id" placeholder="Student ID" required />
+                <input type="text" id="new_course" placeholder="Course Code" required />
+                <input type="text" id="new_grade" placeholder="Grade (e.g. A, B+)" required />
+                <button type="submit">Add Grade</button>
+            </form>
+        </section>
+    </div>
+
+    <script src="aro.js"></script>
+</body>
+
+</html>

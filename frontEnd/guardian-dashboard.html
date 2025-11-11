@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guardian Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h2>Welcome, Guardian</h2>
+            <button id="logoutBtn">Logout</button>
+        </header>
+
+        <section class="dashboard-section">
+            <h3>👤 Your Information</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Guardian ID</th>
+                    <td id="guardian_id"></td>
+                </tr>
+                <tr>
+                    <th>First Name</th>
+                    <td id="first_name"></td>
+                </tr>
+                <tr>
+                    <th>Last Name</th>
+                    <td id="last_name"></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td id="email"></td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td id="phone"></td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="dashboard-section">
+            <h3>📚 Child’s Grades</h3>
+            <table class="info-table">
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody id="grades_table"></tbody>
+            </table>
+        </section>
+
+        <section class="dashboard-section">
+            <h3>⚠️ Child’s Disciplinary Records</h3>
+            <table class="info-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="disciplinary_table"></tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="guardian.js"></script>
+</body>
+
+</html>
