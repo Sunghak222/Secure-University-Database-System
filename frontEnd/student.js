@@ -25,7 +25,13 @@ async function loadStudentData() {
             if (el) el.textContent = student[field] ?? '';
         });
 
-        if (student.disciplinary_records && Array.isArray(student.disciplinary_records)) {
+        // Load grades
+        if (student.student_id) {
+            loadGrades(student.student_id);
+        }
+
+        // Load disciplinary records
+        if (Array.isArray(student.disciplinary_records)) {
             const table = document.getElementById('disciplinary_table');
             table.innerHTML = '';
             student.disciplinary_records.forEach(record => {
@@ -42,6 +48,28 @@ async function loadStudentData() {
     } catch (err) {
         console.error('Failed to load student data:', err);
         alert('Unable to load dashboard. Please try again later.');
+    }
+}
+
+async function loadGrades(studentId) {
+    try {
+        const res = await fetch(`/api/students/${studentId}/grades`);
+        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+        const grades = await res.json();
+
+        const tableBody = document.getElementById('grades_table');
+        tableBody.innerHTML = '';
+        grades.forEach(({ course, semester, grade }) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+        <td>${escapeHTML(course)}</td>
+        <td>${escapeHTML(semester)}</td>
+        <td>${escapeHTML(grade)}</td>
+      `;
+            tableBody.appendChild(row);
+        });
+    } catch (err) {
+        console.error('Failed to load grades:', err);
     }
 }
 
