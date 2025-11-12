@@ -25,7 +25,6 @@ async function loadStudentData() {
             if (el) el.textContent = student[field] ?? '';
         });
 
-        // Optional: If disciplinary records are returned
         if (student.disciplinary_records && Array.isArray(student.disciplinary_records)) {
             const table = document.getElementById('disciplinary_table');
             table.innerHTML = '';

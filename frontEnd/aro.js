@@ -58,7 +58,7 @@ document.getElementById('addGradeForm').addEventListener('submit', async (e) => 
 
     const isValidId = /^\d{6}$/.test(student_id);
     const isValidCourse = /^[A-Z]{4}\d{4}$/.test(course);
-    const isValidGrade = /^(A|A-|B\+|B|C|F)$/.test(grade);
+    const isValidGrade = /^(A\+|A|A-|B\+|B|B-|C\+|C|C-|D\+|D|D-|E\+|E|E-|F)$/;
 
     if (!isValidId || !isValidCourse || !isValidGrade) {
         alert('Invalid input. Please check your entries.');
