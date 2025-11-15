@@ -1,5 +1,6 @@
 package hk.polyu.comp.project3335.securedb.service;
 
+import hk.polyu.comp.project3335.securedb.Dto.LoginResult;
 import hk.polyu.comp.project3335.securedb.model.AuthUser;
 import hk.polyu.comp.project3335.securedb.repository.AuthUserRepository;
 import hk.polyu.comp.project3335.securedb.security.JwtUtil;
@@ -29,13 +30,20 @@ public class AuthUserService {
     }
 
     //returns jwt token
-    public String login(String email, String password) {
-        var user = authUserRepository.findByEmail(email).orElse(null);
-        if (user == null) return null;
+    public LoginResult login(String email, String password) {
+        AuthUser user = authUserRepository.findByEmail(email).orElse(null);
 
-        boolean match = encoder.matches(password, user.getPasswordHash());
-        if (!match) return null;
+        if (user == null || !encoder.matches(password, user.getPasswordHash())) {
+            return null;
+        }
+        String token = jwtUtil.generateToken(user);
 
-        return jwtUtil.generateToken(user.getEmail(), user.getRole());
+        return new LoginResult(
+                token,
+                user.getRole(),
+                user.getStudentId(),
+                user.getGuardianId(),
+                user.getStaffId()
+        );
     }
 }

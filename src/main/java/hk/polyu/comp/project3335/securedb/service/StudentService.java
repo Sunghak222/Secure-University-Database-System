@@ -1,10 +1,12 @@
 package hk.polyu.comp.project3335.securedb.service;
 
+import hk.polyu.comp.project3335.securedb.Dto.StudentDto.UpdateStudentDto;
 import hk.polyu.comp.project3335.securedb.model.Student;
 import hk.polyu.comp.project3335.securedb.repository.StudentRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,7 +30,7 @@ public class StudentService {
         return studentRepository.findById(id);
     }
 
-    public Optional<Student> updateOneById(Long id, Student updatedStudent) {
+    public Optional<Student> updateOneById(Long id, UpdateStudentDto updatedStudent) {
         return studentRepository.findById(id).map(existingStudent -> {
             // Only update fields that are not null (partial update)
             if (updatedStudent.getFirstName() != null) {
@@ -55,13 +57,19 @@ public class StudentService {
             if (updatedStudent.getEnrollmentYear() != null) {
                 existingStudent.setEnrollmentYear(updatedStudent.getEnrollmentYear());
             }
-            if (updatedStudent.getGuardianId() != null) {
-                existingStudent.setGuardianId(updatedStudent.getGuardianId());
-            }
             if (updatedStudent.getGuardianRelation() != null) {
                 existingStudent.setGuardianRelation(updatedStudent.getGuardianRelation());
             }
             return studentRepository.save(existingStudent);
         });
+    }
+    public boolean isChildOfGuardian(Long studentId, Long guardianId) {
+
+        return studentRepository.findById(studentId)
+                .map(s -> s.getGuardianId() != null && s.getGuardianId().equals(guardianId))
+                .orElse(false);
+    }
+    public List<Student> getStudentsByGuardianId(Long guardianId) {
+        return studentRepository.findByGuardianId(guardianId);
     }
 }
