@@ -20,18 +20,21 @@ public class AuthUser {
 
     private Long staffId;
     private Long studentId;
+    private Long guardianId;
 
     private Boolean enabled = true;
 
     public AuthUser() {
 
     }
-    public AuthUser(String email, String passwordHash, String role, Long staffId, Long studentId, Boolean enabled) {
+
+    public AuthUser(String email, String passwordHash, String role, Long staffId, Long studentId, Long guardianId, Boolean enabled) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
         this.staffId = staffId;
         this.studentId = studentId;
+        this.guardianId = guardianId;
         this.enabled = enabled;
     }
 
@@ -81,5 +84,13 @@ public class AuthUser {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Long getGuardianId() {
+        return guardianId;
+    }
+
+    public void setGuardianId(Long guardianId) {
+        this.guardianId = guardianId;
     }
 }

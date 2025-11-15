@@ -13,7 +13,7 @@ CREATE USER IF NOT EXISTS 'comp3335'@'localhost' IDENTIFIED BY 'secure_password'
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,ALTER,INDEX ON securedb.* TO 'comp3335'@'localhost'; \
 FLUSH PRIVILEGES;"
 
-mysql -u root -p < db/schema.sql
+mysql -u root -p
 
 ### B) Spring Boot Default Setting  
 - URL: `jdbc:mysql://127.0.0.1:3306/securedb?useSSL=false&allowPublicKeyRetrieval=true`

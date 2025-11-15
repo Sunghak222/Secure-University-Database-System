@@ -25,7 +25,7 @@ public class GuardianController {
      // Guardian maintains personal information
     @GetMapping("/{guardianId}")
     @PreAuthorize("hasRole('GUARDIAN')")
-    public ResponseEntity<Guardian> getOneById(@PathVariable String guardianId) {
+    public ResponseEntity<Guardian> getOneById(@PathVariable Long guardianId) {
         Guardian guardian = guardianService.getOneById(guardianId).orElse(null);
         if (guardian == null) {
             return ResponseEntity.notFound().build();
@@ -36,7 +36,7 @@ public class GuardianController {
     // Update guardian profile with PATCH
     @PatchMapping("/{guardianId}")
     @PreAuthorize("hasRole('GUARDIAN')")
-    public ResponseEntity<Guardian> updateOneById(@PathVariable String guardianId, 
+    public ResponseEntity<Guardian> updateOneById(@PathVariable Long guardianId,
                                                  @RequestBody UpdateGuardianDto updateDto) {
         // Convert DTO to Guardian entity
         Guardian updatedGuardian = new Guardian();

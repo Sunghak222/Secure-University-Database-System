@@ -2,6 +2,7 @@ package hk.polyu.comp.project3335.securedb.service;
 
 import hk.polyu.comp.project3335.securedb.model.AuthUser;
 import hk.polyu.comp.project3335.securedb.repository.AuthUserRepository;
+import hk.polyu.comp.project3335.securedb.security.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,12 +11,15 @@ public class AuthUserService {
 
     private final AuthUserRepository authUserRepository;
     private final PasswordEncoder encoder;
+    private final JwtUtil jwtUtil;
 
-    public AuthUserService(AuthUserRepository authUserRepository, PasswordEncoder encoder) {
+    public AuthUserService(AuthUserRepository authUserRepository, PasswordEncoder encoder, JwtUtil jwtUtil) {
         this.authUserRepository = authUserRepository;
         this.encoder = encoder;
+        this.jwtUtil = jwtUtil;
     }
 
+    //no need
     public void register(String email, String password, String role) {
         AuthUser au = new AuthUser();
         au.setEmail(email);
@@ -24,8 +28,14 @@ public class AuthUserService {
         authUserRepository.save(au);
     }
 
-    public boolean login(String email, String password) {
+    //returns jwt token
+    public String login(String email, String password) {
         var user = authUserRepository.findByEmail(email).orElse(null);
-        return user != null && encoder.matches(password, user.getPasswordHash());
+        if (user == null) return null;
+
+        boolean match = encoder.matches(password, user.getPasswordHash());
+        if (!match) return null;
+
+        return jwtUtil.generateToken(user.getEmail(), user.getRole());
     }
 }

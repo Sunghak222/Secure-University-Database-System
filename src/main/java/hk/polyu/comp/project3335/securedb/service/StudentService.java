@@ -24,11 +24,11 @@ public class StudentService {
         return studentRepository.findByEmail(email);
     }
 
-    public Optional<Student> getOneById(String id) {
+    public Optional<Student> getOneById(Long id) {
         return studentRepository.findById(id);
     }
 
-    public Optional<Student> updateOneById(String id, Student updatedStudent) {
+    public Optional<Student> updateOneById(Long id, Student updatedStudent) {
         return studentRepository.findById(id).map(existingStudent -> {
             // Only update fields that are not null (partial update)
             if (updatedStudent.getFirstName() != null) {

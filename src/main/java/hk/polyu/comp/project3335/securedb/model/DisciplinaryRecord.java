@@ -1,5 +1,6 @@
 package hk.polyu.comp.project3335.securedb.model;
 
+import hk.polyu.comp.project3335.securedb.config.AESEncryptConverter;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class DisciplinaryRecord {
     @Column(nullable = false)
     private Long staffId;
 
+    @Convert(converter = AESEncryptConverter.class)
     @Column(length = 500)
     private String descriptions;
 

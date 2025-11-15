@@ -25,11 +25,11 @@ public class GuardianService {
         return guardianRepository.findByEmail(email);
     }
 
-    public Optional<Guardian> getOneById(String id) {
+    public Optional<Guardian> getOneById(Long id) {
         return guardianRepository.findById(id);
     }
 
-    public Optional<Guardian> updateOneById(String id, Guardian updatedGuardian) {
+    public Optional<Guardian> updateOneById(Long id, Guardian updatedGuardian) {
         return guardianRepository.findById(id).map(existingGuardian -> {
             // Only update fields that are not null (partial update)
             if (updatedGuardian.getFirstName() != null) {

@@ -1,5 +1,6 @@
 package hk.polyu.comp.project3335.securedb.model;
 
+import hk.polyu.comp.project3335.securedb.config.AESEncryptConverter;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,6 +20,7 @@ public class Guardian {
     @Column(unique=true,length = 100)
     private String email;
 
+    @Convert(converter = AESEncryptConverter.class)
     @Column(length = 20)
     private String phone;
 

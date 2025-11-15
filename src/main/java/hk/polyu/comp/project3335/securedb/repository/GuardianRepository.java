@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface GuardianRepository extends JpaRepository<Guardian, Long> {
 
     Optional<Guardian> findByEmail(String email);
-    Optional<Guardian> findById(String id);
+    Optional<Guardian> findById(Long id);
 }

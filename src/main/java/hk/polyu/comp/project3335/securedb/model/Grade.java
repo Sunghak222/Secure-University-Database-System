@@ -1,5 +1,6 @@
 package hk.polyu.comp.project3335.securedb.model;
 
+import hk.polyu.comp.project3335.securedb.config.AESEncryptConverter;
 import jakarta.persistence.*;
 
 
@@ -20,9 +21,11 @@ public class Grade {
     @Column(nullable = false, length = 10)
     private String term;
 
+    @Convert(converter = AESEncryptConverter.class)
     @Column(length = 5)
     private String grade;
 
+    @Convert(converter = AESEncryptConverter.class)
     @Column(length = 255)
     private String comments;
 

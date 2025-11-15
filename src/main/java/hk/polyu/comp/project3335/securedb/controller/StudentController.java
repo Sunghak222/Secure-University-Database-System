@@ -26,7 +26,7 @@ public class StudentController {
     // Student maintains personal information
     @GetMapping("/{studentId}")
     @PreAuthorize("hasRole('STUDENT')")
-    public ResponseEntity<Student> getOneById(@PathVariable String studentId) {
+    public ResponseEntity<Student> getOneById(@PathVariable Long studentId) {
         Student student = studentService.getOneById(studentId).orElse(null);
         if (student == null) {
             return ResponseEntity.notFound().build();
@@ -37,7 +37,7 @@ public class StudentController {
     // Update student profile with PATCH
     @PatchMapping("/{studentId}")
     @PreAuthorize("hasRole('STUDENT')")
-    public ResponseEntity<Student> updateOneById(@PathVariable String studentId, 
+    public ResponseEntity<Student> updateOneById(@PathVariable Long studentId,
                                                  @RequestBody UpdateStudentDto updateDto) {
         // Convert DTO to Student entity
         Student updatedStudent = new Student();
