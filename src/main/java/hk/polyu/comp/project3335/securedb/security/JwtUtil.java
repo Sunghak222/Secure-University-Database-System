@@ -89,9 +89,17 @@ public class JwtUtil {
     // Validate token
     public boolean validate(String token) {
         try {
-            parseClaims(token);
+            if (token == null || token.trim().isEmpty()) {
+                return false;
+            }
+            parseClaims(token.trim());
             return true;
         } catch (JwtException e) {
+            System.err.println("JWT validation failed: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.err.println("Unexpected error validating JWT: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }

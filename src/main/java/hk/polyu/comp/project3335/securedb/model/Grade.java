@@ -21,11 +21,9 @@ public class Grade {
     @Column(nullable = false, length = 10)
     private String term;
 
-    @Convert(converter = AESEncryptConverter.class)
     @Column(length = 5)
     private String grade;
 
-    @Convert(converter = AESEncryptConverter.class)
     @Column(length = 255)
     private String comments;
 

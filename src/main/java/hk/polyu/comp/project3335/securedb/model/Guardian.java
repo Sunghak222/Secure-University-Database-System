@@ -17,10 +17,9 @@ public class Guardian {
     @Column(nullable = false, length = 50)
     private String lastName;
 
-    @Column(unique=true,length = 100)
+    @Column(unique = true, length = 100)
     private String email;
 
-    @Convert(converter = AESEncryptConverter.class)
     @Column(length = 20)
     private String phone;
 

@@ -20,18 +20,15 @@ public class Student {
     @Column(nullable = false, length = 50)
     private String gender;
 
-    @Convert(converter = AESEncryptConverter.class)
     @Column(nullable = false, length = 50)
     private String identificationNumber;
 
-    @Convert(converter = AESEncryptConverter.class)
     @Column(length = 250)
     private String address;
 
     @Column(unique=true,length = 100)
     private String email;
 
-    @Convert(converter = AESEncryptConverter.class)
     @Column(length = 20)
     private String phone;
 

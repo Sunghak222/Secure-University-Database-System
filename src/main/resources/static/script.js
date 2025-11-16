@@ -25,19 +25,25 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     }
 
     try {
-        const res = await fetch('/api/login', {
+        const res = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ role, email, password })
+            body: JSON.stringify({ email, password })
         });
 
         const data = await res.json();
 
         if (res.ok) {
-            const safeRole = role.toLowerCase();
+            // Store JWT token and user info
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('role', data.role);
+            localStorage.setItem('userId', data.userId);
+            
+            // Redirect based on role
+            const safeRole = data.role.toLowerCase();
             window.location.href = `${safeRole}-dashboard.html`;
         } else {
-            errorBox.textContent = data.error || 'Login failed.';
+            errorBox.textContent = data.message || data.error || 'Login failed.';
         }
     } catch (err) {
         console.error('Login error:', err);

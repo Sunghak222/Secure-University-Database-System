@@ -22,7 +22,6 @@ public class DisciplinaryRecord {
     @Column(nullable = false)
     private Long staffId;
 
-    @Convert(converter = AESEncryptConverter.class)
     @Column(length = 500)
     private String descriptions;
 

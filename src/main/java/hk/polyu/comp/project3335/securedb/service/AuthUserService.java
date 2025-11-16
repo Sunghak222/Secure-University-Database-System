@@ -33,9 +33,22 @@ public class AuthUserService {
     public LoginResult login(String email, String password) {
         AuthUser user = authUserRepository.findByEmail(email).orElse(null);
 
-        if (user == null || !encoder.matches(password, user.getPasswordHash())) {
+        if (user == null) {
+            System.out.println("User not found: " + email);
             return null;
         }
+        
+        System.out.println("User found: " + email);
+        System.out.println("Password provided: " + password);
+        System.out.println("Password hash in DB: " + user.getPasswordHash());
+        
+        boolean matches = encoder.matches(password, user.getPasswordHash());
+        System.out.println("Password matches: " + matches);
+        
+        if (!matches) {
+            return null;
+        }
+        
         String token = jwtUtil.generateToken(user);
 
         return new LoginResult(

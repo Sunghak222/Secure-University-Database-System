@@ -17,22 +17,31 @@ public class DisciplinaryRecordService {
         this.disciplinaryRecordRepository = disciplinaryRecordRepository;
     }
 
-    public DisciplinaryRecord create(Long studentId, LocalDate date, Long staffId, String descriptions) {
+    public DisciplinaryRecord create(Long studentId,LocalDate date, Long staffId,  String descriptions) {
         DisciplinaryRecord record = new DisciplinaryRecord(studentId, date, staffId, descriptions);
         return disciplinaryRecordRepository.save(record);
     }
 
-    public DisciplinaryRecord update(Long id, LocalDate date, String descriptions) {
-        DisciplinaryRecord record = disciplinaryRecordRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Disciplinary record not found"));
+   public Optional<DisciplinaryRecord> update(Long id, LocalDate date, String description) {
+        Optional<DisciplinaryRecord> recordOpt = disciplinaryRecordRepository.findById(id);
+        if (recordOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        
+        DisciplinaryRecord record = recordOpt.get();
         record.setDate(date);
-        record.setDescriptions(descriptions);
-        return disciplinaryRecordRepository.save(record);
+        record.setDescriptions(description);
+        return Optional.of(disciplinaryRecordRepository.save(record));
     }
 
-    public void delete(Long id) {
+    public boolean delete(Long id) {
+        if (!disciplinaryRecordRepository.existsById(id)) {
+            return false;
+        }
         disciplinaryRecordRepository.deleteById(id);
+        return true;
     }
+
 
     public List<DisciplinaryRecord> listByStudent(Long studentId) {
         return disciplinaryRecordRepository.findDisciplinaryRecordsByStudentId(studentId);

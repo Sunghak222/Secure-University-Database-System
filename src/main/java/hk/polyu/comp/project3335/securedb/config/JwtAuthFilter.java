@@ -38,31 +38,36 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Changed: Extract token
-        String token = authHeader.substring(7);
+        try {
+            // Changed: Extract token and trim any whitespace
+            String token = authHeader.substring(7).trim();
 
-        if (!jwtUtil.validate(token)) {
-            filterChain.doFilter(request, response);
-            return;
+            if (!jwtUtil.validate(token)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            String email = jwtUtil.getEmail(token);
+            String role = jwtUtil.getRole(token);
+
+            // Changed: Create authentication object
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            email,
+                            null,
+                            List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                    );
+
+            authentication.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request)
+            );
+
+            // Changed: Put into context
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (Exception e) {
+            System.err.println("JWT validation error: " + e.getMessage());
+            e.printStackTrace();
         }
-
-        String email = jwtUtil.getEmail(token);
-        String role = jwtUtil.getRole(token);
-
-        // Changed: Create authentication object
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(
-                        email,
-                        null,
-                        List.of(new SimpleGrantedAuthority("ROLE_" + role))
-                );
-
-        authentication.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
-        );
-
-        // Changed: Put into context
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
     }

@@ -39,13 +39,22 @@ INSERT INTO staffs (
 )
 VALUES
     (
-        'Wong', 'David', 'M',
-        'S9988776',
-        '88 Kowloon Bay Road, HK',
-        'david.wong@example.com',
-        '+85292223333',
-        'IT',
-        'STAFF'
+        'Lam', 'Sarah', 'F',
+        'S1122334',
+        '15 Academic Building, HK',
+        'sarah.lam@example.com',
+        '+85293334444',
+        'Academic Affairs',
+        'ARO'
+    ),
+    (
+        'Cheung', 'Michael', 'M',
+        'S5566778',
+        '20 Student Affairs Office, HK',
+        'michael.cheung@example.com',
+        '+85294445555',
+        'Student Affairs',
+        'DRO'
     );
 
 
@@ -63,8 +72,8 @@ VALUES
 ------------------------------------
 INSERT INTO grades (student_id, course_id, term, grade, comments)
 VALUES
-    (1, 1, '202526S1', 'A', 'Excellent performance'),
-    (1, 2, '202526S1', 'B+', 'Needs improvement in writing');
+    (1, 'AMA1000', '202526S1', 'A', 'Excellent performance'),
+    (1, 'COMP3335', '202526S1', 'B+', 'Needs improvement in writing');
 
 
 ------------------------------------
@@ -86,26 +95,41 @@ INSERT INTO auth_users (
     staff_id, student_id, guardian_id, enabled
 )
 VALUES
--- Admin user (no linked person)
+    -- Password for all accounts: "password123"
+-- BCrypt hash: $2a$10$N9qo8uLOickgx2ZMRZoMye6l7dQJQnTqx6MQmN5nC3gKQJ8pQKQQS
+
+-- Admin user
 ('admin@example.com',
- '$2a$10$abcdefghabcdefghabcdefghabcdefghabcdefghabcd',
+ '$2a$12$iiY/q0c4K122ovmHWP2u4Ogudf.QoSsG2o0e1zXyTVSPDbEnB7WQO',
  'ADMIN',
  NULL, NULL, NULL, TRUE),
 
 -- Staff login (linked to staff.id = 1)
 ('david.wong@example.com',
- '$2a$10$qwertyqwertyqwertyqwertyqwertyqwertyqwertyqw',
+ '$2a$12$iiY/q0c4K122ovmHWP2u4Ogudf.QoSsG2o0e1zXyTVSPDbEnB7WQO',
  'STAFF',
  1, NULL, NULL, TRUE),
 
+-- ARO login (linked to staff.id = 2)
+('sarah.lam@example.com',
+ '$2a$12$iiY/q0c4K122ovmHWP2u4Ogudf.QoSsG2o0e1zXyTVSPDbEnB7WQO',
+ 'ARO',
+ 2, NULL, NULL, TRUE),
+
+-- DRO login (linked to staff.id = 3)
+('michael.cheung@example.com',
+ '$2a$12$iiY/q0c4K122ovmHWP2u4Ogudf.QoSsG2o0e1zXyTVSPDbEnB7WQO',
+ 'DRO',
+ 3, NULL, NULL, TRUE),
+
 -- Student login (linked to student.id = 1)
 ('jason.lee@example.com',
- '$2a$10$zxcvzxcvzxcvzxcvzxcvzxcvzxcvzxcvzxcvzxcvzxcv',
+ '$2a$12$iiY/q0c4K122ovmHWP2u4Ogudf.QoSsG2o0e1zXyTVSPDbEnB7WQO',
  'STUDENT',
  NULL, 1, NULL, TRUE),
 
 -- Guardian login (linked to guardian.id = 1)
 ('mary.chan@example.com',
- '$2a$10$asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf',
+ '$2a$12$iiY/q0c4K122ovmHWP2u4Ogudf.QoSsG2o0e1zXyTVSPDbEnB7WQO',
  'GUARDIAN',
  NULL, NULL, 1, TRUE);

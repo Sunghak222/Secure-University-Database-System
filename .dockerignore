@@ -1,0 +1,12 @@
+# Add this to .dockerignore to speed up builds
+.git
+.gradle
+build/
+!build/libs/*.jar
+bin/
+.idea
+.vscode
+*.iml
+*.log
+.DS_Store
+target/

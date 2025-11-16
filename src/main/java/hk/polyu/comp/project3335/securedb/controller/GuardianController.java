@@ -72,45 +72,5 @@ public class GuardianController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    //get guardian's student
-    @GetMapping("/students")
-    @PreAuthorize("hasRole('GUARDIAN')")
-    public ResponseEntity<List<Student>> getStudents(HttpServletRequest request) {
 
-        Long guardianId = jwtUtil.extractGuardianId(request);
-        if (guardianId == null) return ResponseEntity.status(403).build();
-
-        List<Student> students = studentService.getStudentsByGuardianId(guardianId);
-
-        return ResponseEntity.ok(students);
-    }
-
-    //get child's grade
-    @GetMapping("/students/{studentId}/grades")
-    @PreAuthorize("hasRole('GUARDIAN')")
-    public ResponseEntity<List<Grade>> getChildGrades(@PathVariable Long studentId, HttpServletRequest request) {
-
-        Long guardianId = jwtUtil.extractGuardianId(request);
-
-        if (!studentService.isChildOfGuardian(studentId, guardianId)) {
-            return ResponseEntity.status(403).build();
-        }
-
-        return ResponseEntity.ok(gradeService.listByStudent(studentId));
-    }
-
-    @GetMapping("/my-students/{studentId}/discipline")
-    @PreAuthorize("hasRole('GUARDIAN')")
-    public ResponseEntity<List<DisciplinaryRecord>> getChildRecords(@PathVariable Long studentId, HttpServletRequest request) {
-
-        Long guardianId = jwtUtil.extractGuardianId(request);
-
-        if (!studentService.isChildOfGuardian(studentId, guardianId)) {
-            return ResponseEntity.status(403).build();
-        }
-
-        return ResponseEntity.ok(
-                disciplinaryRecordService.listByStudent(studentId)
-        );
-    }
 }
