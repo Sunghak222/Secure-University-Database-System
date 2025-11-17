@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/disciplinary-records")
+@RequestMapping("/api/disciplinary-records")
 public class DisciplinaryRecordController {
 
     private final DisciplinaryRecordService disciplinaryRecordService;

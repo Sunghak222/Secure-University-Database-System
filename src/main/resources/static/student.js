@@ -33,8 +33,6 @@ function checkAuth() {
 async function loadStudentData() {
     if (!checkAuth()) return;
     
-    const studentId = localStorage.getItem('userId');
-    
     try {
         // Fetch student personal info
         const res = await fetch(`/api/students/me`, {

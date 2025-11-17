@@ -35,7 +35,7 @@ async function loadGuardianDashboard() {
     
     try {
         // Load guardian personal info
-        const guardianRes = await fetch(`/api/guardians/${guardianId}`, {
+        const guardianRes = await fetch(`/api/guardians/me`, {
             headers: getAuthHeaders()
         });
         
@@ -50,7 +50,7 @@ async function loadGuardianDashboard() {
         const guardian = await guardianRes.json();
 
         // Populate guardian info
-        document.getElementById('guardian_id').textContent = guardian.id || '';
+        document.getElementById('id').textContent = guardian.id || '';
         document.getElementById('first_name').textContent = guardian.firstName || '';
         document.getElementById('last_name').textContent = guardian.lastName || '';
         document.getElementById('email').textContent = guardian.email || '';
