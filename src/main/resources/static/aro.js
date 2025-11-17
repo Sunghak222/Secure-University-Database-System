@@ -118,7 +118,7 @@ document.getElementById('addGradeForm').addEventListener('submit', async (e) => 
     e.preventDefault();
 
     const studentId = document.getElementById('new_student_id').value.trim();
-    const courseId = document.getElementById('new_course_id').value.trim();
+    const courseId = document.getElementById('new_course').value.trim();
     const term = document.getElementById('new_term').value.trim();
     const grade = document.getElementById('new_grade').value.trim();
     const comments = document.getElementById('new_comments')?.value.trim() || '';
