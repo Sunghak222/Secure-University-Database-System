@@ -34,7 +34,7 @@ async function loadAllGrades() {
     if (!checkAuth()) return;
     
     try {
-        const res = await fetch('/grades/all', {
+        const res = await fetch('/api/grades/all', {
             headers: getAuthHeaders()
         });
         
@@ -91,7 +91,7 @@ document.getElementById('searchForm').addEventListener('submit', async (e) => {
     }
 
     try {
-        let url = '/grades/all';
+        let url = '/api/grades/all';
         const res = await fetch(url, {
             headers: getAuthHeaders()
         });
@@ -124,7 +124,7 @@ document.getElementById('addGradeForm').addEventListener('submit', async (e) => 
     const comments = document.getElementById('new_comments')?.value.trim() || '';
 
     try {
-        const res = await fetch('/grades', {
+        const res = await fetch('/api/grades', {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify({ 
@@ -157,7 +157,7 @@ document.addEventListener('click', async (e) => {
         if (!confirm('Are you sure you want to delete this grade?')) return;
 
         try {
-            const res = await fetch(`/grades/${gradeId}`, {
+            const res = await fetch(`/api/grades/${gradeId}`, {
                 method: 'DELETE',
                 headers: getAuthHeaders()
             });
@@ -181,7 +181,7 @@ document.addEventListener('click', async (e) => {
         if (!newGrade) return;
 
         try {
-            const res = await fetch(`/grades/${gradeId}`, {
+            const res = await fetch(`/api/grades/${gradeId}`, {
                 method: 'PUT',
                 headers: getAuthHeaders(),
                 body: JSON.stringify({ grade: newGrade, comments: newComments || '' })
