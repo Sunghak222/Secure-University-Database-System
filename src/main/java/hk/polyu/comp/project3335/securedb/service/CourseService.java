@@ -4,6 +4,8 @@ import hk.polyu.comp.project3335.securedb.model.Course;
 import hk.polyu.comp.project3335.securedb.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CourseService {
 
@@ -11,6 +13,10 @@ public class CourseService {
 
     public CourseService(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
+    }
+
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
     }
 
     public Course create(Course course) {

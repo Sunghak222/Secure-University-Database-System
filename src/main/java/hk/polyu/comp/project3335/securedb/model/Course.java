@@ -20,7 +20,16 @@ public class Course {
     }
 
     public Course(String code, String courseName) {
+        this.code = code;
         this.courseName = courseName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCode() {

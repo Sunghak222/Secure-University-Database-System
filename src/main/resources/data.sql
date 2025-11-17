@@ -26,6 +26,16 @@ VALUES
         2025,
         1,
         'Mother'
+    ),
+    (
+        'abc', 'yyy', 'M',
+        'A1234547',
+        '13 Harbour Road, Wanchai',
+        'aaa.lee@example.com',
+        '+85291256789',
+        2025,
+        1,
+        'Mother'
     );
 
 
@@ -73,7 +83,9 @@ VALUES
 INSERT INTO grades (student_id, course_id, term, grade, comments)
 VALUES
     (1, 1, '202526S1', 'A', 'Excellent performance'),
-    (1, 2, '202526S1', 'B+', 'Needs improvement in writing');
+    (1, 2, '202526S1', 'B+', 'Needs improvement in writing'),
+    (2, 1, '202526S1', 'A+', 'Outstanding performance'),
+    (2, 2, '202526S1', 'A', 'Very good work');
 
 
 ------------------------------------
@@ -98,11 +110,6 @@ VALUES
     -- Password for all accounts: "password123"
 -- BCrypt hash: $2a$10$N9qo8uLOickgx2ZMRZoMye6l7dQJQnTqx6MQmN5nC3gKQJ8pQKQQS
 
--- Admin user
-('admin@example.com',
- '$2a$12$iiY/q0c4K122ovmHWP2u4Ogudf.QoSsG2o0e1zXyTVSPDbEnB7WQO',
- 'ADMIN',
- NULL, NULL, NULL, TRUE),
 
 -- Staff login (linked to staff.id = 1)
 ('david.wong@example.com',
@@ -127,6 +134,12 @@ VALUES
  '$2a$12$iiY/q0c4K122ovmHWP2u4Ogudf.QoSsG2o0e1zXyTVSPDbEnB7WQO',
  'STUDENT',
  NULL, 1, NULL, TRUE),
+
+-- Student login (linked to student.id = 2)
+('aaa.lee@example.com',
+ '$2a$12$iiY/q0c4K122ovmHWP2u4Ogudf.QoSsG2o0e1zXyTVSPDbEnB7WQO',
+ 'STUDENT',
+ NULL, 2, NULL, TRUE),
 
 -- Guardian login (linked to guardian.id = 1)
 ('mary.chan@example.com',
