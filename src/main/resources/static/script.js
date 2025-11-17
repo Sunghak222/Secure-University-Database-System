@@ -37,7 +37,16 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             // Store JWT token and user info
             localStorage.setItem('token', data.token);
             localStorage.setItem('role', data.role);
-            localStorage.setItem('userId', data.userId);
+            
+            if (data.studentId !== null) {
+                localStorage.setItem('userId', data.studentId);
+            }
+            if (data.guardianId !== null) {
+                localStorage.setItem('userId', data.guardianId);
+            }
+            if (data.staffId !== null) {
+                localStorage.setItem('userId', data.staffId);
+}
             
             // Redirect based on role
             const safeRole = data.role.toLowerCase();
