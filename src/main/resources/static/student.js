@@ -90,7 +90,7 @@ async function loadGrades(studentId) {
             courseMap[c.id] = c.code + ' - ' + c.courseName;
         });
 
-        const res = await fetch(`/grades/${studentId}`, {
+        const res = await fetch(`/api/grades/${studentId}`, {
             headers: getAuthHeaders()
         });
         
@@ -128,7 +128,7 @@ async function loadGrades(studentId) {
 async function loadDisciplinaryRecords(studentId) {
     console.log('loadDisciplinaryRecords called with studentId:', studentId);
     try {
-        const res = await fetch(`/disciplinary-records/${studentId}`, {
+        const res = await fetch(`/api/disciplinary-records/${studentId}`, {
             headers: getAuthHeaders()
         });
         
