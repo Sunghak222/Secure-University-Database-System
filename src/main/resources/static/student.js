@@ -51,7 +51,7 @@ async function loadStudentData() {
         const student = await res.json();
 
         // Populate personal info
-        document.getElementById('student_id').textContent = student.id || '';
+        document.getElementById('id').textContent = student.id || '';
         document.getElementById('first_name').textContent = student.firstName || '';
         document.getElementById('last_name').textContent = student.lastName || '';
         document.getElementById('gender').textContent = student.gender || '';
@@ -60,7 +60,7 @@ async function loadStudentData() {
         document.getElementById('email').textContent = student.email || '';
         document.getElementById('phone').textContent = student.phone || '';
         document.getElementById('enrollment_year').textContent = student.enrollmentYear || '';
-        document.getElementById('guardianId').textContent = student.guardianId || '';
+        document.getElementById('guardian_id').textContent = student.guardianId || '';
         document.getElementById('guardian_relation').textContent = student.guardianRelation || '';
 
         // Load grades and disciplinary records

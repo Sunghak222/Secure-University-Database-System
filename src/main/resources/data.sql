@@ -72,8 +72,8 @@ VALUES
 ------------------------------------
 INSERT INTO grades (student_id, course_id, term, grade, comments)
 VALUES
-    (1, 'AMA1000', '202526S1', 'A', 'Excellent performance'),
-    (1, 'COMP3335', '202526S1', 'B+', 'Needs improvement in writing');
+    (1, 1, '202526S1', 'A', 'Excellent performance'),
+    (1, 2, '202526S1', 'B+', 'Needs improvement in writing');
 
 
 ------------------------------------
