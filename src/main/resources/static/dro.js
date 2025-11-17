@@ -32,7 +32,7 @@ async function loadAllRecords() {
     if (!checkAuth()) return;
     
     try {
-        const res = await fetch('/disciplinary-records/all', {
+        const res = await fetch('/api/disciplinary-records/all', {
             headers: getAuthHeaders()
         });
         
@@ -87,7 +87,7 @@ document.getElementById('searchForm').addEventListener('submit', async (e) => {
     }
 
     try {
-        const res = await fetch('/disciplinary-records/all', {
+        const res = await fetch('/api/disciplinary-records/all', {
             headers: getAuthHeaders()
         });
         
@@ -111,7 +111,7 @@ document.getElementById('addRecordForm').addEventListener('submit', async (e) =>
     const description = document.getElementById('new_reason').value.trim();
 
     try {
-        const res = await fetch('/disciplinary-records', {
+        const res = await fetch('/api/disciplinary-records', {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify({ 
@@ -150,7 +150,7 @@ document.addEventListener('click', (e) => {
         const id = e.target.dataset.id;
         if (!confirm('Delete this record?')) return;
 
-        fetch(`/disciplinary-records/${id}`, {
+        fetch(`/api/disciplinary-records/${id}`, {
             method: 'DELETE',
             headers: getAuthHeaders()
         }).then(res => {
@@ -174,7 +174,7 @@ document.getElementById('editRecordForm').addEventListener('submit', async (e) =
     const description = document.getElementById('edit_reason').value.trim();
 
     try {
-        const res = await fetch(`/disciplinary-records/${id}`, {
+        const res = await fetch(`/api/disciplinary-records/${id}`, {
             method: 'PUT',
             headers: getAuthHeaders(),
             body: JSON.stringify({ date, description })

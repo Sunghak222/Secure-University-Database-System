@@ -48,6 +48,9 @@ async function loadStudentData() {
         if (!res.ok) throw new Error(`HTTP error ${res.status}`);
         const student = await res.json();
         
+        // Store current student data for edit mode
+        currentStudentData = student;
+        
         console.log('Student data fetched:', student);
         console.log('Student ID:', student.id);
 
@@ -165,6 +168,67 @@ async function loadDisciplinaryRecords(studentId) {
 document.getElementById('logoutBtn').addEventListener('click', () => {
     localStorage.clear();
     window.location.href = 'index.html';
+});
+
+// Edit mode functionality
+let currentStudentData = null;
+
+document.getElementById('editBtn').addEventListener('click', () => {
+    document.getElementById('viewMode').style.display = 'none';
+    document.getElementById('editMode').style.display = 'block';
+    
+    // Populate edit form with current data
+    document.getElementById('edit_id').textContent = currentStudentData.id || '';
+    document.getElementById('edit_first_name').value = currentStudentData.firstName || '';
+    document.getElementById('edit_last_name').value = currentStudentData.lastName || '';
+    document.getElementById('edit_gender').value = currentStudentData.gender || 'M';
+    document.getElementById('edit_identification_number').value = currentStudentData.identificationNumber || '';
+    document.getElementById('edit_address').value = currentStudentData.address || '';
+    document.getElementById('edit_email').value = currentStudentData.email || '';
+    document.getElementById('edit_phone').value = currentStudentData.phone || '';
+    document.getElementById('edit_enrollment_year').value = currentStudentData.enrollmentYear || '';
+    document.getElementById('edit_guardian_relation').value = currentStudentData.guardianRelation || '';
+});
+
+document.getElementById('cancelBtn').addEventListener('click', () => {
+    document.getElementById('viewMode').style.display = 'block';
+    document.getElementById('editMode').style.display = 'none';
+});
+
+document.getElementById('editForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const updateData = {
+        firstName: document.getElementById('edit_first_name').value,
+        lastName: document.getElementById('edit_last_name').value,
+        gender: document.getElementById('edit_gender').value,
+        identificationNumber: document.getElementById('edit_identification_number').value,
+        address: document.getElementById('edit_address').value,
+        email: document.getElementById('edit_email').value,
+        phone: document.getElementById('edit_phone').value,
+        enrollmentYear: parseInt(document.getElementById('edit_enrollment_year').value) || null,
+        guardianRelation: document.getElementById('edit_guardian_relation').value
+    };
+    
+    try {
+        const res = await fetch('/api/students/me', {
+            method: 'PATCH',
+            headers: getAuthHeaders(),
+            body: JSON.stringify(updateData)
+        });
+        
+        if (res.ok) {
+            alert('Information updated successfully!');
+            // Reload the page to show updated data
+            location.reload();
+        } else {
+            const error = await res.text();
+            alert('Failed to update: ' + error);
+        }
+    } catch (err) {
+        console.error('Failed to update student info:', err);
+        alert('Failed to update information. Please try again.');
+    }
 });
 
 loadStudentData();

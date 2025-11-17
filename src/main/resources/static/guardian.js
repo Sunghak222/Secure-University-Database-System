@@ -1,3 +1,6 @@
+// Store guardian data for editing
+let currentGuardianData = null;
+
 function escapeHTML(str) {
     if (!str) return '';
     return String(str).replace(/[&<>"']/g, (char) => ({
@@ -48,6 +51,9 @@ async function loadGuardianDashboard() {
         
         if (!guardianRes.ok) throw new Error(`HTTP error ${guardianRes.status}`);
         const guardian = await guardianRes.json();
+        
+        // Store guardian data for edit mode
+        currentGuardianData = guardian;
 
         // Populate guardian info
         document.getElementById('id').textContent = guardian.id || '';
@@ -277,6 +283,55 @@ async function loadChildDisciplinaryRecords(student, showNames) {
         console.error('Failed to load child disciplinary records:', err);
     }
 }
+
+// Edit mode functionality
+document.getElementById('editBtn').addEventListener('click', () => {
+    document.getElementById('viewMode').style.display = 'none';
+    document.getElementById('editMode').style.display = 'block';
+    
+    // Populate edit form with current data
+    document.getElementById('edit_id').textContent = currentGuardianData.id || '';
+    document.getElementById('edit_first_name').value = currentGuardianData.firstName || '';
+    document.getElementById('edit_last_name').value = currentGuardianData.lastName || '';
+    document.getElementById('edit_email').value = currentGuardianData.email || '';
+    document.getElementById('edit_phone').value = currentGuardianData.phone || '';
+});
+
+document.getElementById('cancelBtn').addEventListener('click', () => {
+    document.getElementById('viewMode').style.display = 'block';
+    document.getElementById('editMode').style.display = 'none';
+});
+
+document.getElementById('editForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const updateData = {
+        firstName: document.getElementById('edit_first_name').value,
+        lastName: document.getElementById('edit_last_name').value,
+        email: document.getElementById('edit_email').value,
+        phone: document.getElementById('edit_phone').value
+    };
+    
+    try {
+        const res = await fetch('/api/guardians/me', {
+            method: 'PATCH',
+            headers: getAuthHeaders(),
+            body: JSON.stringify(updateData)
+        });
+        
+        if (res.ok) {
+            alert('Information updated successfully!');
+            // Reload the page to show updated data
+            location.reload();
+        } else {
+            const error = await res.text();
+            alert('Failed to update: ' + error);
+        }
+    } catch (err) {
+        console.error('Failed to update guardian info:', err);
+        alert('Failed to update information. Please try again.');
+    }
+});
 
 document.getElementById('logoutBtn').addEventListener('click', () => {
     localStorage.clear();

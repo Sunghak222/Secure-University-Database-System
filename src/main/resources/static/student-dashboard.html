@@ -16,7 +16,8 @@
         </header>
 
         <section class="dashboard-section">
-            <h3>👤 Personal Information</h3>
+            <h3>👤 Personal Information <button id="editBtn" style="margin-left: 10px; padding: 5px 15px;">Edit</button></h3>
+            <div id="viewMode">
             <table class="info-table">
                 <tr>
                     <th>Student ID</th>
@@ -63,6 +64,63 @@
                     <td id="guardian_relation"></td>
                 </tr>
             </table>
+            </div>
+            
+            <div id="editMode" style="display: none;">
+                <form id="editForm">
+                    <table class="info-table">
+                        <tr>
+                            <th>Student ID</th>
+                            <td id="edit_id"></td>
+                        </tr>
+                        <tr>
+                            <th>First Name</th>
+                            <td><input type="text" id="edit_first_name" required /></td>
+                        </tr>
+                        <tr>
+                            <th>Last Name</th>
+                            <td><input type="text" id="edit_last_name" required /></td>
+                        </tr>
+                        <tr>
+                            <th>Gender</th>
+                            <td>
+                                <select id="edit_gender" required>
+                                    <option value="M">M</option>
+                                    <option value="F">F</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Identification Number</th>
+                            <td><input type="text" id="edit_identification_number" required /></td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td><input type="text" id="edit_address" /></td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td><input type="email" id="edit_email" required /></td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td><input type="text" id="edit_phone" /></td>
+                        </tr>
+                        <tr>
+                            <th>Enrollment Year</th>
+                            <td><input type="number" id="edit_enrollment_year" /></td>
+                        </tr>
+                        <tr>
+                            <th>Guardian Relationship</th>
+                            <td><input type="text" id="edit_guardian_relation" /></td>
+                        </tr>
+                    </table>
+                    <div style="margin-top: 15px;">
+                        <button type="submit" style="padding: 8px 20px; margin-right: 10px;">Save</button>
+                        <button type="button" id="cancelBtn" style="padding: 8px 20px;">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </section>
 
         <section class="dashboard-section">

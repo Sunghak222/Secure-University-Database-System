@@ -101,7 +101,7 @@ public class GradeController {
             @PathVariable Long gradeId, 
             @RequestBody UpdateGradeDto updateGradeDto) {
         try {
-            Grade updatedGrade = gradeService.update(gradeId, updateGradeDto.getGrade(), updateGradeDto.getComments());
+            Grade updatedGrade = gradeService.update(gradeId, updateGradeDto.getTerm(), updateGradeDto.getGrade(), updateGradeDto.getComments());
             return ResponseEntity.ok(updatedGrade);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

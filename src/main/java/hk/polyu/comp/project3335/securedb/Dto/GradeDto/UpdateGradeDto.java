@@ -2,6 +2,7 @@ package hk.polyu.comp.project3335.securedb.Dto.GradeDto;
 
 public class UpdateGradeDto {
 
+    private String term;
     private String grade;
     private String comments;
 
@@ -9,8 +10,17 @@ public class UpdateGradeDto {
     }
 
     public UpdateGradeDto(String term, String grade, String comments) {
+        this.term = term;
         this.grade = grade;
         this.comments = comments;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
     }
 
     public String getGrade() {
