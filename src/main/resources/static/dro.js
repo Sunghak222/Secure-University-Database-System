@@ -32,7 +32,7 @@ async function loadAllRecords() {
     if (!checkAuth()) return;
     
     try {
-        const res = await fetch('/disciplinary-records/all', {
+        const res = await fetch('/api/disciplinary-records/all', {
             headers: getAuthHeaders()
         });
         
@@ -80,22 +80,26 @@ document.getElementById('searchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const studentId = document.getElementById('search_student_id').value.trim();
-
-    if (!studentId) {
-        loadAllRecords();
-        return;
-    }
+    const reason = document.getElementById('search_reason').value.trim().toLowerCase();
 
     try {
-        const res = await fetch('/disciplinary-records/all', {
+        const res = await fetch('/api/disciplinary-records/all', {
             headers: getAuthHeaders()
         });
         
         if (!res.ok) throw new Error('Search failed');
         let records = await res.json();
+        console.log("Fetched Records:", records);
 
-        // Filter client-side
-        records = records.filter(r => String(r.studentId) === studentId);
+        if (studentId) {
+            records = records.filter(r => String(r.studentId) === studentId);
+        }
+        if (reason) {
+            records = records.filter(r =>
+                r.descriptions?.toLowerCase().includes(reason)
+            );
+        }
+
         displayRecords(records);
     } catch (err) {
         console.error('Failed to search records:', err);
@@ -111,7 +115,7 @@ document.getElementById('addRecordForm').addEventListener('submit', async (e) =>
     const description = document.getElementById('new_reason').value.trim();
 
     try {
-        const res = await fetch('/disciplinary-records', {
+        const res = await fetch('/api/disciplinary-records', {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify({ 
@@ -143,6 +147,7 @@ document.addEventListener('click', (e) => {
         document.getElementById('edit_student_id').value = row.children[0].textContent;
         document.getElementById('edit_date').value = row.children[1].textContent;
         document.getElementById('edit_reason').value = row.children[2].textContent;
+        document.getElementById('edit_status').value = row.children[3].textContent;
         document.getElementById('editRecordSection').style.display = 'block';
     }
 
@@ -150,7 +155,7 @@ document.addEventListener('click', (e) => {
         const id = e.target.dataset.id;
         if (!confirm('Delete this record?')) return;
 
-        fetch(`/disciplinary-records/${id}`, {
+        fetch(`/api/disciplinary-records/${id}`, {
             method: 'DELETE',
             headers: getAuthHeaders()
         }).then(res => {
@@ -174,7 +179,7 @@ document.getElementById('editRecordForm').addEventListener('submit', async (e) =
     const description = document.getElementById('edit_reason').value.trim();
 
     try {
-        const res = await fetch(`/disciplinary-records/${id}`, {
+        const res = await fetch(`/api/disciplinary-records/${id}`, {
             method: 'PUT',
             headers: getAuthHeaders(),
             body: JSON.stringify({ date, description })

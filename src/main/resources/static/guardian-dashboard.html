@@ -13,32 +13,63 @@
         <header>
             <h2>Welcome, Guardian</h2>
             <button id="logoutBtn">Logout</button>
+            <button id="editBtn">Edit</button>
         </header>
 
         <section class="dashboard-section">
             <h3>👤 Your Information</h3>
-            <table class="info-table">
-                <tr>
-                    <th>Guardian ID</th>
-                    <td id="id"></td>
-                </tr>
-                <tr>
-                    <th>First Name</th>
-                    <td id="first_name"></td>
-                </tr>
-                <tr>
-                    <th>Last Name</th>
-                    <td id="last_name"></td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td id="email"></td>
-                </tr>
-                <tr>
-                    <th>Phone</th>
-                    <td id="phone"></td>
-                </tr>
-            </table>
+            <div id="viewMode">
+                <table class="info-table">
+                    <tr>
+                        <th>Guardian ID</th>
+                        <td id="id"></td>
+                    </tr>
+                    <tr>
+                        <th>First Name</th>
+                        <td id="first_name"></td>
+                    </tr>
+                    <tr>
+                        <th>Last Name</th>
+                        <td id="last_name"></td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td id="email"></td>
+                    </tr>
+                    <tr>
+                        <th>Phone</th>
+                        <td id="phone"></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="editMode" style="display: none;">
+                <form id="editForm">
+                    <table class="info-table">
+                        <tr>
+                            <th>Guardian ID</th>
+                            <td id="edit_id"></td>
+                        </tr>
+                        <tr>
+                            <th>First Name</th>
+                            <td><input type="text" id="edit_first_name" required /></td>
+                        </tr>
+                        <tr>
+                            <th>Last Name</th>
+                            <td><input type="text" id="edit_last_name" required /></td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td><input type="email" id="edit_email" required /></td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td><input type="tel" id="edit_phone" required /></td>
+                        </tr>
+                    </table>
+                    <button type="submit">Save Changes</button>
+                    <button type="button" id="cancelBtn">Cancel</button>
+                </form>
+            </div>
         </section>
 
         <section class="dashboard-section">
@@ -47,6 +78,7 @@
                 <thead>
                     <tr>
                         <th>Course</th>
+                        <th>Term</th>
                         <th>Grade</th>
                     </tr>
                 </thead>

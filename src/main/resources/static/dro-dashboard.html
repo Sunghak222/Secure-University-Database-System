@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DRO Dashboard</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="drodashboard.css" />
 </head>
 
 <body>
@@ -18,7 +18,7 @@
         <section class="dashboard-section">
             <h3>🔍 Search Disciplinary Records</h3>
             <form id="searchForm">
-                <input type="text" id="search_student_id" placeholder="Student ID" pattern="\d{6}" maxlength="6" />
+                <input type="text" id="search_student_id" placeholder="Student ID"/>
                 <input type="text" id="search_reason" placeholder="Reason" maxlength="100" />
                 <button type="submit">Search</button>
             </form>
@@ -45,8 +45,7 @@
         <section class="dashboard-section">
             <h3>➕ Add New Record</h3>
             <form id="addRecordForm">
-                <input type="text" id="new_student_id" placeholder="Student ID" required pattern="\d{6}"
-                    maxlength="6" />
+                <input type="text" id="new_student_id" placeholder="Student ID" maxlength="6" />
                 <input type="date" id="new_date" required />
                 <input type="text" id="new_reason" placeholder="Reason" required maxlength="100" />
                 <input type="text" id="new_status" placeholder="Status" required maxlength="50" />
@@ -58,7 +57,7 @@
             <h3>✏️ Edit Record</h3>
             <form id="editRecordForm">
                 <input type="hidden" id="edit_record_id" />
-                <input type="text" id="edit_student_id" placeholder="Student ID" readonly />
+                <input type="text" id="edit_student_id" placeholder="Student ID" />
                 <input type="date" id="edit_date" required />
                 <input type="text" id="edit_reason" placeholder="Reason" required maxlength="100" />
                 <input type="text" id="edit_status" placeholder="Status" required maxlength="50" />

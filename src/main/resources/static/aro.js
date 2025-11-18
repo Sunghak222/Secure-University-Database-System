@@ -1,3 +1,6 @@
+// Store grade being edited
+let currentEditGrade = null;
+
 // Utility: escape HTML
 function escapeHTML(str) {
     if (!str) return '';
@@ -34,7 +37,7 @@ async function loadAllGrades() {
     if (!checkAuth()) return;
     
     try {
-        const res = await fetch('/grades/all', {
+        const res = await fetch('/api/grades/all', {
             headers: getAuthHeaders()
         });
         
@@ -69,6 +72,7 @@ function displayGrades(grades) {
             <td>${escapeHTML(g.courseId)}</td>
             <td>${escapeHTML(g.term)}</td>
             <td>${escapeHTML(g.grade)}</td>
+            <td>${escapeHTML(g.comments)}</td>
             <td>
                 <button class="edit-btn" data-id="${g.id}">Edit</button>
                 <button class="delete-btn" data-id="${g.id}">Delete</button>
@@ -91,7 +95,7 @@ document.getElementById('searchForm').addEventListener('submit', async (e) => {
     }
 
     try {
-        let url = '/grades/all';
+        let url = '/api/grades/all';
         const res = await fetch(url, {
             headers: getAuthHeaders()
         });
@@ -124,7 +128,7 @@ document.getElementById('addGradeForm').addEventListener('submit', async (e) => 
     const comments = document.getElementById('new_comments')?.value.trim() || '';
 
     try {
-        const res = await fetch('/grades', {
+        const res = await fetch('/api/grades', {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify({ 
@@ -157,7 +161,7 @@ document.addEventListener('click', async (e) => {
         if (!confirm('Are you sure you want to delete this grade?')) return;
 
         try {
-            const res = await fetch(`/grades/${gradeId}`, {
+            const res = await fetch(`/api/grades/${gradeId}`, {
                 method: 'DELETE',
                 headers: getAuthHeaders()
             });
@@ -175,28 +179,71 @@ document.addEventListener('click', async (e) => {
 
     if (e.target.classList.contains('edit-btn')) {
         const gradeId = e.target.dataset.id;
-        const newGrade = prompt('Enter new grade (e.g., A, B+, C):');
-        const newComments = prompt('Enter comments:');
         
-        if (!newGrade) return;
-
-        try {
-            const res = await fetch(`/grades/${gradeId}`, {
-                method: 'PUT',
-                headers: getAuthHeaders(),
-                body: JSON.stringify({ grade: newGrade, comments: newComments || '' })
-            });
-
-            if (res.ok) {
-                alert('Grade updated.');
-                loadAllGrades();
-            } else {
-                alert('Failed to update grade.');
-            }
-        } catch (err) {
-            console.error('Update failed:', err);
-        }
+        // Find the grade data from the current table
+        const row = e.target.closest('tr');
+        const cells = row.querySelectorAll('td');
+        
+        currentEditGrade = {
+            id: gradeId,
+            studentId: cells[0].textContent,
+            courseId: cells[1].textContent,
+            term: cells[2].textContent,
+            grade: cells[3].textContent,
+            comments: cells[4].textContent
+        };
+        
+        // Show edit form and populate with current values
+        document.getElementById('edit_grade_id').textContent = currentEditGrade.id;
+        document.getElementById('edit_student_id').textContent = currentEditGrade.studentId;
+        document.getElementById('edit_course_id').textContent = currentEditGrade.courseId;
+        document.getElementById('edit_term').value = currentEditGrade.term;
+        document.getElementById('edit_grade').value = currentEditGrade.grade;
+        document.getElementById('edit_comments').value = currentEditGrade.comments;
+        
+        document.getElementById('editGradeModal').style.display = 'block';
+        document.getElementById('editGradeModal').scrollIntoView({ behavior: 'smooth' });
     }
+});
+
+// Edit grade form submit
+document.getElementById('editGradeForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    if (!currentEditGrade) return;
+    
+    const updatedData = {
+        term: document.getElementById('edit_term').value.trim(),
+        grade: document.getElementById('edit_grade').value.trim(),
+        comments: document.getElementById('edit_comments').value.trim() || ''
+    };
+    
+    try {
+        const res = await fetch(`/api/grades/${currentEditGrade.id}`, {
+            method: 'PUT',
+            headers: getAuthHeaders(),
+            body: JSON.stringify(updatedData)
+        });
+        
+        if (res.ok) {
+            alert('Grade updated successfully.');
+            document.getElementById('editGradeModal').style.display = 'none';
+            currentEditGrade = null;
+            loadAllGrades();
+        } else {
+            const error = await res.text();
+            alert('Failed to update grade: ' + error);
+        }
+    } catch (err) {
+        console.error('Update failed:', err);
+        alert('Failed to update grade.');
+    }
+});
+
+// Cancel edit
+document.getElementById('cancelEditBtn').addEventListener('click', () => {
+    document.getElementById('editGradeModal').style.display = 'none';
+    currentEditGrade = null;
 });
 
 // Logout

@@ -31,7 +31,9 @@
                     <tr>
                         <th>Student ID</th>
                         <th>Course</th>
+                        <th>Term</th>
                         <th>Grade</th>
+                        <th>Comments</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -50,6 +52,21 @@
                 <input type="text" id="new_grade" placeholder="Grade (e.g. A, B+)" required />
                 <input type="text" id="new_comments" placeholder="Comments" required />
                 <button type="submit">Add Grade</button>
+            </form>
+        </section>
+
+        <!-- Edit Grade Modal -->
+        <section id="editGradeModal" class="dashboard-section" style="display: none;">
+            <h3>✏️ Edit Grade</h3>
+            <form id="editGradeForm">
+                <p><strong>Grade ID:</strong> <span id="edit_grade_id"></span></p>
+                <p><strong>Student ID:</strong> <span id="edit_student_id"></span></p>
+                <p><strong>Course ID:</strong> <span id="edit_course_id"></span></p>
+                <input type="text" id="edit_term" placeholder="Term (e.g. 202526S1)" required />
+                <input type="text" id="edit_grade" placeholder="Grade (e.g. A, B+)" required />
+                <input type="text" id="edit_comments" placeholder="Comments" />
+                <button type="submit">Save Changes</button>
+                <button type="button" id="cancelEditBtn">Cancel</button>
             </form>
         </section>
     </div>

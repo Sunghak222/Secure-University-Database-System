@@ -95,24 +95,24 @@ public class GradeController {
         return ResponseEntity.ok(grades);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{gradeId}")
     @PreAuthorize("hasRole('ARO')")
     public ResponseEntity<Grade> updateGrade(
-            @PathVariable Long id, 
+            @PathVariable Long gradeId, 
             @RequestBody UpdateGradeDto updateGradeDto) {
         try {
-            Grade updatedGrade = gradeService.update(id, updateGradeDto.getGrade(), updateGradeDto.getComments());
+            Grade updatedGrade = gradeService.update(gradeId, updateGradeDto.getTerm(), updateGradeDto.getGrade(), updateGradeDto.getComments());
             return ResponseEntity.ok(updatedGrade);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{gradeId}")
     @PreAuthorize("hasRole('ARO')")
-    public ResponseEntity<Void> deleteGrade(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteGrade(@PathVariable Long gradeId) {
         try {
-            gradeService.delete(id);
+            gradeService.delete(gradeId);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

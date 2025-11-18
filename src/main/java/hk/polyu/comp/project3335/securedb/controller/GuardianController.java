@@ -72,5 +72,15 @@ public class GuardianController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Get students under this guardian
+    @GetMapping("/me/students")
+    @PreAuthorize("hasRole('GUARDIAN')")
+    public ResponseEntity<List<Student>> getMyStudents(HttpServletRequest request) {
+        Long guardianId = jwtUtil.extractGuardianId(request);
+        if (guardianId == null) return ResponseEntity.status(403).build();
+
+        List<Student> students = studentService.getStudentsByGuardianId(guardianId);
+        return ResponseEntity.ok(students);
+    }
 
 }
