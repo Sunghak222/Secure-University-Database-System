@@ -1,5 +1,6 @@
 package hk.polyu.comp.project3335.securedb.controller;
 
+import hk.polyu.comp.project3335.securedb.Dto.GradeDecryptedDto;
 import hk.polyu.comp.project3335.securedb.security.JwtUtil;
 import hk.polyu.comp.project3335.securedb.service.StudentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/grades")
 public class GradeController {
-    
+
     private final GradeService gradeService;
     private final StudentService studentService;
     private final JwtUtil jwtUtil;
@@ -34,13 +35,13 @@ public class GradeController {
     @GetMapping("/{studentId}")
     @PreAuthorize("hasRole('STUDENT') or hasRole('GUARDIAN') or hasRole('ARO')")
     public ResponseEntity<?> getGradesByStudentId(
-            @PathVariable Long studentId, 
+            @PathVariable Long studentId,
             HttpServletRequest request) {
-        
+
         // Retrieve current user information from JWT
         String token = jwtUtil.resolveToken(request);
         String role = jwtUtil.getRole(token);
-        
+
         // Perform different permission checks based on the role.
         if ("STUDENT".equals(role)) {
             // Students can only view their own grades.
@@ -52,37 +53,39 @@ public class GradeController {
         } else if ("GUARDIAN".equals(role)) {
             // Guardians can only view the grades of the students they are guardians for.
             Long guardianId = jwtUtil.extractGuardianId(request);
-            
-            // Check if the student belongs to this guardian.
-            Optional<Student> studentOpt = studentService.getOneById(studentId);
-            if (studentOpt.isEmpty()) {
-                return ResponseEntity.notFound().build();
-            }
-            
-            Student student = studentOpt.get();
-            if (guardianId == null || !guardianId.equals(student.getGuardianId())) {
+            var studentOpt = studentService.getOneById(studentId);
+
+            if (studentOpt.isEmpty()) return ResponseEntity.notFound().build();
+
+            if (guardianId == null || !guardianId.equals(studentOpt.get().getGuardianId())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body("Access denied. You can only view your child's grades.");
             }
         }
         // The ARO role can view all students' grades without requiring additional checks.
-        
-        List<Grade> grades = gradeService.listByStudent(studentId);
-        return ResponseEntity.ok(grades);
+
+        return ResponseEntity.ok(gradeService.listByStudent(studentId));
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ARO')")
     public ResponseEntity<?> addGrade(@RequestBody CreateGradeDto createGradeDto) {
         try {
-        Grade grade = gradeService.create(
-            createGradeDto.getStudentId(),
-            createGradeDto.getCourseId(),
-            createGradeDto.getTerm(),
-            createGradeDto.getGrade(),
-            createGradeDto.getComments()
-        );
-            return ResponseEntity.status(HttpStatus.CREATED).body(grade);
+            gradeService.create(
+                    createGradeDto.getStudentId(),
+                    createGradeDto.getCourseId(),
+                    createGradeDto.getTerm(),
+                    createGradeDto.getGrade(),
+                    createGradeDto.getComments()
+            );
+
+            // Created grade again decrypting for response
+            var result = gradeService.listByStudentAndCourse(
+                    createGradeDto.getStudentId(),
+                    createGradeDto.getCourseId()
+            );
+
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -90,24 +93,32 @@ public class GradeController {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ARO')")
-    public ResponseEntity<List<Grade>> getAllGrades() {
-        List<Grade> grades = gradeService.listAll();
-        return ResponseEntity.ok(grades);
+    public ResponseEntity<List<GradeDecryptedDto>> getAllGrades() {
+        return ResponseEntity.ok(gradeService.listAll());
     }
 
     @PutMapping("/{gradeId}")
     @PreAuthorize("hasRole('ARO')")
-    public ResponseEntity<Grade> updateGrade(
-            @PathVariable Long gradeId, 
+    public ResponseEntity<?> updateGrade(
+            @PathVariable Long gradeId,
             @RequestBody UpdateGradeDto updateGradeDto) {
         try {
-            Grade updatedGrade = gradeService.update(gradeId, updateGradeDto.getTerm(), updateGradeDto.getGrade(), updateGradeDto.getComments());
-            return ResponseEntity.ok(updatedGrade);
+            gradeService.update(
+                    gradeId,
+                    updateGradeDto.getTerm(),
+                    updateGradeDto.getGrade(),
+                    updateGradeDto.getComments()
+            );
+
+            // Respond with updated decrypted DTO
+            return ResponseEntity.ok(
+                    gradeService.getById(gradeId)
+            );
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
     @DeleteMapping("/{gradeId}")
     @PreAuthorize("hasRole('ARO')")
     public ResponseEntity<Void> deleteGrade(@PathVariable Long gradeId) {

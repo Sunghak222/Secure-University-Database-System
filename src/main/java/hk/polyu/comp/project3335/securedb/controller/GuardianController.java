@@ -1,5 +1,7 @@
 package hk.polyu.comp.project3335.securedb.controller;
 
+import hk.polyu.comp.project3335.securedb.Dto.GuardianDecryptedDto;
+import hk.polyu.comp.project3335.securedb.Dto.StudentDecryptedDto;
 import hk.polyu.comp.project3335.securedb.model.DisciplinaryRecord;
 import hk.polyu.comp.project3335.securedb.model.Grade;
 import hk.polyu.comp.project3335.securedb.model.Student;
@@ -41,8 +43,7 @@ public class GuardianController {
     //get guardians info
     @GetMapping("/me")
     @PreAuthorize("hasRole('GUARDIAN')")
-    public ResponseEntity<Guardian> getGuardianInfo(HttpServletRequest request) {
-
+    public ResponseEntity<GuardianDecryptedDto> getGuardianInfo(HttpServletRequest request) {
         Long guardianId = jwtUtil.extractGuardianId(request);
         if (guardianId == null) return ResponseEntity.status(403).build();
 
@@ -51,13 +52,10 @@ public class GuardianController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    //update guardian info
     @PatchMapping("/me")
     @PreAuthorize("hasRole('GUARDIAN')")
-    public ResponseEntity<Guardian> updateGuardianInfo(
-            HttpServletRequest request,
-            @RequestBody UpdateGuardianDto updateDto
-    ) {
+    public ResponseEntity<GuardianDecryptedDto> updateGuardianInfo(HttpServletRequest request,
+                                                                    @RequestBody UpdateGuardianDto updateDto) {
         Long guardianId = jwtUtil.extractGuardianId(request);
         if (guardianId == null) return ResponseEntity.status(403).build();
 
@@ -75,11 +73,13 @@ public class GuardianController {
     // Get students under this guardian
     @GetMapping("/me/students")
     @PreAuthorize("hasRole('GUARDIAN')")
-    public ResponseEntity<List<Student>> getMyStudents(HttpServletRequest request) {
+    public ResponseEntity<List<StudentDecryptedDto>> getMyStudents(HttpServletRequest request) {
         Long guardianId = jwtUtil.extractGuardianId(request);
         if (guardianId == null) return ResponseEntity.status(403).build();
 
-        List<Student> students = studentService.getStudentsByGuardianId(guardianId);
+        List<StudentDecryptedDto> students =
+                studentService.getStudentsByGuardianId(guardianId);
+
         return ResponseEntity.ok(students);
     }
 

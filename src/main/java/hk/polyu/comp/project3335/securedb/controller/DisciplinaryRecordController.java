@@ -1,5 +1,6 @@
 package hk.polyu.comp.project3335.securedb.controller;
 
+import hk.polyu.comp.project3335.securedb.Dto.DisciplinaryRecordDecryptedDto;
 import hk.polyu.comp.project3335.securedb.model.DisciplinaryRecord;
 import hk.polyu.comp.project3335.securedb.model.Student;
 import hk.polyu.comp.project3335.securedb.service.DisciplinaryRecordService;
@@ -33,58 +34,60 @@ public class DisciplinaryRecordController {
         this.jwtUtil = jwtUtil;
     }
 
-    // GET /disciplinary-records/{studentId} - Students, Guardians, and DRO can view
     @GetMapping("/{studentId}")
     @PreAuthorize("hasRole('STUDENT') or hasRole('GUARDIAN') or hasRole('DRO')")
     public ResponseEntity<?> getRecordsByStudentId(
             @PathVariable Long studentId,
             HttpServletRequest request) {
 
-        // Retrieve current user information from JWT
         String token = jwtUtil.resolveToken(request);
         String role = jwtUtil.getRole(token);
 
-        // Perform different permission checks based on the role
         if ("STUDENT".equals(role)) {
-            // Students can only view their own disciplinary records
             Long jwtStudentId = jwtUtil.extractStudentId(request);
-            if (jwtStudentId == null || !jwtStudentId.equals(studentId)) {
+            if (!studentId.equals(jwtStudentId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body("Access denied. You can only view your own disciplinary records.");
             }
-        } else if ("GUARDIAN".equals(role)) {
-            // Guardians can only view the disciplinary records of the students they are guardians for
+        }
+
+        // GUARDIAN views his children
+        else if ("GUARDIAN".equals(role)) {
             Long guardianId = jwtUtil.extractGuardianId(request);
 
-            // Check if the student belongs to this guardian
-            Optional<Student> studentOpt = studentService.getOneById(studentId);
+            var studentOpt = studentService.getOneById(studentId);
             if (studentOpt.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
 
-            Student student = studentOpt.get();
-            if (guardianId == null || !guardianId.equals(student.getGuardianId())) {
+            if (!studentOpt.get().getGuardianId().equals(guardianId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body("Access denied. You can only view your child's disciplinary records.");
             }
         }
-        // The DRO role can view all students' disciplinary records without requiring additional checks
 
-        List<DisciplinaryRecord> records = disciplinaryRecordService.listByStudent(studentId);
+        // DRO
+        List<DisciplinaryRecordDecryptedDto> records =
+                disciplinaryRecordService.listByStudent(studentId);
+
         return ResponseEntity.ok(records);
     }
 
     // POST /disciplinary-records - DRO can add new disciplinary records
     @PostMapping
     @PreAuthorize("hasRole('DRO')")
-    public ResponseEntity<?> addDisciplinaryRecord(@RequestBody CreateDisciplinaryRecordDto createDto) {
+    public ResponseEntity<?> addDisciplinaryRecord(
+            @RequestBody CreateDisciplinaryRecordDto createDto) {
+
         try {
-            DisciplinaryRecord record = disciplinaryRecordService.create(
-                createDto.getStudentId(),
-                createDto.getDate(),
-                createDto.getStaffId(),
-                createDto.getDescription()
-            );
+            DisciplinaryRecordDecryptedDto record =
+                    disciplinaryRecordService.create(
+                            createDto.getStudentId(),
+                            createDto.getDate(),
+                            createDto.getStaffId(),
+                            createDto.getDescription()
+                    );
+
             return ResponseEntity.status(HttpStatus.CREATED).body(record);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -94,8 +97,11 @@ public class DisciplinaryRecordController {
     // GET /disciplinary-records/all - DRO can view all disciplinary records
     @GetMapping("/all")
     @PreAuthorize("hasRole('DRO')")
-    public ResponseEntity<List<DisciplinaryRecord>> getAllRecords() {
-        List<DisciplinaryRecord> records = disciplinaryRecordService.listAll();
+    public ResponseEntity<List<DisciplinaryRecordDecryptedDto>> getAllRecords() {
+
+        List<DisciplinaryRecordDecryptedDto> records =
+                disciplinaryRecordService.listAll();
+
         return ResponseEntity.ok(records);
     }
 
@@ -105,7 +111,12 @@ public class DisciplinaryRecordController {
     public ResponseEntity<?> updateDisciplinaryRecord(
             @PathVariable Long id,
             @RequestBody UpdateDisciplinaryRecordDto updateDto) {
-        return disciplinaryRecordService.update(id, updateDto.getDate(), updateDto.getDescription())
+
+        return disciplinaryRecordService.update(
+                        id,
+                        updateDto.getDate(),
+                        updateDto.getDescription()
+                )
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

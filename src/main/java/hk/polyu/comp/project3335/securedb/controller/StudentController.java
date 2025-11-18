@@ -1,5 +1,6 @@
 package hk.polyu.comp.project3335.securedb.controller;
 
+import hk.polyu.comp.project3335.securedb.Dto.StudentDecryptedDto;
 import hk.polyu.comp.project3335.securedb.security.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -47,7 +48,7 @@ public class StudentController {
     // Student maintains personal information
     @GetMapping("/me")
     @PreAuthorize("hasRole('STUDENT')")
-    public ResponseEntity<Student> getStudentInfo(HttpServletRequest request) {
+    public ResponseEntity<StudentDecryptedDto> getStudentInfo(HttpServletRequest request) {
         Long studentId = jwtUtil.extractStudentId(request);
         if (studentId == null) return ResponseEntity.status(403).build();
 
@@ -59,14 +60,13 @@ public class StudentController {
     // Update student profile with PATCH
     @PatchMapping("/me")
     @PreAuthorize("hasRole('STUDENT')")
-    public ResponseEntity<Student> updateStudentInfo(@RequestBody UpdateStudentDto updateDto,
+    public ResponseEntity<StudentDecryptedDto> updateStudentInfo(@RequestBody UpdateStudentDto updateDto,
                                            HttpServletRequest request) {
         Long studentId = jwtUtil.extractStudentId(request);
         if (studentId == null) return ResponseEntity.status(403).build();
 
-        return studentService.updateOneById(studentId, updateDto)
+        return studentService.update(studentId, updateDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
 }

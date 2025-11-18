@@ -5,7 +5,10 @@
 ------------------------------------
 INSERT INTO guardians (last_name, first_name, email, phone)
 VALUES
-    ('Chan', 'Mary', 'mary.chan@example.com', '+85290001111');
+    (
+        'Chan', 'Mary', 'mary.chan@example.com',
+        AES_ENCRYPT('+85290001111', UNHEX(SHA2('YOUR_SECRET_KEY',512)))
+    );
 
 
 ------------------------------------
@@ -19,23 +22,19 @@ INSERT INTO students (
 VALUES
     (
         'Lee', 'Jason', 'M',
-        'A1234567',
-        '12 Harbour Road, Wanchai',
+        AES_ENCRYPT('A1234567', UNHEX(SHA2('YOUR_SECRET_KEY',512))),   -- Changed
+        AES_ENCRYPT('12 Harbour Road, Wanchai', UNHEX(SHA2('YOUR_SECRET_KEY',512))), -- Changed
         'jason.lee@example.com',
-        '+85291234567',
-        2025,
-        1,
-        'Mother'
+        AES_ENCRYPT('+85291234567', UNHEX(SHA2('YOUR_SECRET_KEY',512))), -- Changed
+        2025, 1, 'Mother'
     ),
     (
         'abc', 'yyy', 'M',
-        'A1234547',
-        '13 Harbour Road, Wanchai',
+        AES_ENCRYPT('A1234547', UNHEX(SHA2('YOUR_SECRET_KEY',512))),  -- Changed
+        AES_ENCRYPT('13 Harbour Road, Wanchai', UNHEX(SHA2('YOUR_SECRET_KEY',512))), -- Changed
         'aaa.lee@example.com',
-        '+85291256789',
-        2025,
-        1,
-        'Mother'
+        AES_ENCRYPT('+85291256789', UNHEX(SHA2('YOUR_SECRET_KEY',512))), -- Changed
+        2025, 1, 'Mother'
     );
 
 
@@ -50,21 +49,19 @@ INSERT INTO staffs (
 VALUES
     (
         'Lam', 'Sarah', 'F',
-        'S1122334',
-        '15 Academic Building, HK',
+        AES_ENCRYPT('S1122334', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
+        AES_ENCRYPT('15 Academic Building, HK', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
         'sarah.lam@example.com',
-        '+85293334444',
-        'Academic Affairs',
-        'ARO'
+        AES_ENCRYPT('+85293334444', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
+        'Academic Affairs', 'ARO'
     ),
     (
         'Cheung', 'Michael', 'M',
-        'S5566778',
-        '20 Student Affairs Office, HK',
+        AES_ENCRYPT('S5566778', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
+        AES_ENCRYPT('20 Student Affairs Office, HK', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
         'michael.cheung@example.com',
-        '+85294445555',
-        'Student Affairs',
-        'DRO'
+        AES_ENCRYPT('+85294445555', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
+        'Student Affairs', 'DRO'
     );
 
 
@@ -82,9 +79,21 @@ VALUES
 ------------------------------------
 INSERT INTO grades (student_id, course_id, term, grade, comments)
 VALUES
-    (1, 1, '202526S1', 'A', 'Excellent performance'),
-    (1, 2, '202526S1', 'B+', 'Needs improvement in writing'),
-    (2, 1, '202526S1', 'A+', 'Outstanding performance');
+    (
+        1, 1, '202526S1',
+        AES_ENCRYPT('A', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
+        AES_ENCRYPT('Excellent performance', UNHEX(SHA2('YOUR_SECRET_KEY',512)))
+    ),
+    (
+        1, 2, '202526S1',
+        AES_ENCRYPT('B+', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
+        AES_ENCRYPT('Needs improvement in writing', UNHEX(SHA2('YOUR_SECRET_KEY',512)))
+    ),
+    (
+        2, 1, '202526S1',
+        AES_ENCRYPT('A+', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
+        AES_ENCRYPT('Outstanding performance', UNHEX(SHA2('YOUR_SECRET_KEY',512)))
+    );
 
 
 ------------------------------------
@@ -92,7 +101,10 @@ VALUES
 ------------------------------------
 INSERT INTO disciplinary_records (student_id, date, staff_id, descriptions)
 VALUES
-    (1, '2025-11-01', 1, 'Late submission of homework');
+    (
+        1, '2025-11-01', 1,
+        AES_ENCRYPT('Late submission of homework', UNHEX(SHA2('YOUR_SECRET_KEY',512)))
+    );
 
 
 ------------------------------------
@@ -106,9 +118,6 @@ INSERT INTO auth_users (
     staff_id, student_id, guardian_id, enabled
 )
 VALUES
-    -- Password for all accounts: "password123"
--- BCrypt hash: $2a$10$N9qo8uLOickgx2ZMRZoMye6l7dQJQnTqx6MQmN5nC3gKQJ8pQKQQS
-
 
 -- Staff login (linked to staff.id = 1)
 ('david.wong@example.com',

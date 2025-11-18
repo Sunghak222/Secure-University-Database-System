@@ -1,11 +1,14 @@
 package hk.polyu.comp.project3335.securedb.service;
 
+import hk.polyu.comp.project3335.securedb.Dto.GuardianDecryptedDto;
 import hk.polyu.comp.project3335.securedb.model.Guardian;
 import hk.polyu.comp.project3335.securedb.model.Student;
 import hk.polyu.comp.project3335.securedb.repository.GuardianRepository;
 import hk.polyu.comp.project3335.securedb.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -14,37 +17,53 @@ public class GuardianService {
 
     private final GuardianRepository guardianRepository;
 
+    @Value("${app.crypto.key}")
+    private String cryptoKey;
+
     public GuardianService(GuardianRepository guardianRepository) {
         this.guardianRepository = guardianRepository;
     }
 
-    public Guardian save(Guardian guardian) {
-        return guardianRepository.save(guardian);
-    }
-    public Optional<Guardian> findByEmail(String email) {
-        return guardianRepository.findByEmail(email);
+    public Optional<GuardianDecryptedDto> findById(Long id) {
+        return guardianRepository.findDecryptedById(id, cryptoKey)
+                .map(GuardianDecryptedDto::from);
     }
 
-    public Optional<Guardian> getOneById(Long id) {
-        return guardianRepository.findById(id);
+    public Optional<GuardianDecryptedDto> findByEmail(String email) {
+        return guardianRepository.findDecryptedByEmail(email, cryptoKey)
+                .map(GuardianDecryptedDto::from);
     }
 
-    public Optional<Guardian> updateOneById(Long id, Guardian updatedGuardian) {
-        return guardianRepository.findById(id).map(existingGuardian -> {
-            // Only update fields that are not null (partial update)
+    public Optional<GuardianDecryptedDto> getOneById(Long id) {
+        return guardianRepository.findDecryptedById(id, cryptoKey)
+                .map(GuardianDecryptedDto::from);
+    }
+
+    @Transactional
+    public Optional<GuardianDecryptedDto> updateOneById(Long id, Guardian updatedGuardian) { // Changed
+        return guardianRepository.findById(id).map(existing -> {
+
             if (updatedGuardian.getFirstName() != null) {
-                existingGuardian.setFirstName(updatedGuardian.getFirstName());
+                existing.setFirstName(updatedGuardian.getFirstName());
             }
             if (updatedGuardian.getLastName() != null) {
-                existingGuardian.setLastName(updatedGuardian.getLastName());
+                existing.setLastName(updatedGuardian.getLastName());
             }
             if (updatedGuardian.getEmail() != null) {
-                existingGuardian.setEmail(updatedGuardian.getEmail());
+                existing.setEmail(updatedGuardian.getEmail());
             }
+
             if (updatedGuardian.getPhone() != null) {
-                existingGuardian.setPhone(updatedGuardian.getPhone());
+                guardianRepository.updateEncryptedPhone(
+                        id,
+                        updatedGuardian.getPhone(),
+                        cryptoKey
+                );
             }
-            return guardianRepository.save(existingGuardian);
+
+            guardianRepository.save(existing);
+
+            return getOneById(id).orElse(null);
         });
     }
 }
