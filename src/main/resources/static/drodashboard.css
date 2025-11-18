@@ -1,0 +1,146 @@
+/* ====== Layout ====== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.dashboard-container {
+    width: 90%;
+    max-width: 1000px;
+    background: #ffffff;
+    margin-top: 40px;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ====== Header ====== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+header h2 {
+    margin: 0;
+}
+
+#logoutBtn {
+    padding: 8px 15px;
+    background-color: #d9534f;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+#logoutBtn:hover {
+    background-color: #c9302c;
+}
+
+/* ====== Sections ====== */
+.dashboard-section {
+    margin-bottom: 30px;
+}
+
+.dashboard-section h3 {
+    margin-bottom: 15px;
+}
+
+/* ====== Forms ====== */
+form input,
+form button {
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+form input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form button {
+    background-color: #0275d8;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #025aa5;
+}
+
+/* ====== Table ====== */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.info-table th {
+    background-color: #0275d8;
+    color: white;
+}
+
+.info-table th,
+.info-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.info-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* ====== Action Buttons ====== */
+.edit-btn {
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    background-color: #4cae4c;
+}
+
+.delete-btn {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #c9302c;
+}
+
+/* ====== Edit Section ====== */
+#editRecordSection {
+    background: #eef5ff;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+#cancelEditBtn {
+    background-color: #777;
+    padding: 7px 12px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#cancelEditBtn:hover {
+    background-color: #555;
+}
