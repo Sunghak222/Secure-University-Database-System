@@ -80,11 +80,7 @@ document.getElementById('searchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const studentId = document.getElementById('search_student_id').value.trim();
-
-    if (!studentId) {
-        loadAllRecords();
-        return;
-    }
+    const reason = document.getElementById('search_reason').value.trim().toLowerCase();
 
     try {
         const res = await fetch('/api/disciplinary-records/all', {
@@ -93,9 +89,17 @@ document.getElementById('searchForm').addEventListener('submit', async (e) => {
         
         if (!res.ok) throw new Error('Search failed');
         let records = await res.json();
+        console.log("Fetched Records:", records);
 
-        // Filter client-side
-        records = records.filter(r => String(r.studentId) === studentId);
+        if (studentId) {
+            records = records.filter(r => String(r.studentId) === studentId);
+        }
+        if (reason) {
+            records = records.filter(r =>
+                r.descriptions?.toLowerCase().includes(reason)
+            );
+        }
+
         displayRecords(records);
     } catch (err) {
         console.error('Failed to search records:', err);
@@ -143,6 +147,7 @@ document.addEventListener('click', (e) => {
         document.getElementById('edit_student_id').value = row.children[0].textContent;
         document.getElementById('edit_date').value = row.children[1].textContent;
         document.getElementById('edit_reason').value = row.children[2].textContent;
+        document.getElementById('edit_status').value = row.children[3].textContent;
         document.getElementById('editRecordSection').style.display = 'block';
     }
 
