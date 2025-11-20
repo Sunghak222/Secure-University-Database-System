@@ -56,6 +56,6 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         }
     } catch (err) {
         console.error('Login error:', err);
-        errorBox.textContent = 'Network error. Please try again.';
+        errorBox.textContent = 'Invalid email or password. Please try again.';
     }
 });
