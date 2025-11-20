@@ -25,7 +25,7 @@ public class AuthUserController {
         LoginResult result = authUserService.login(dto.getEmail(), dto.getPassword());
 
         if (result == null) {
-            return ResponseEntity.status(401).body("Invalid email or password");
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid email or password"));
         }
 
         return ResponseEntity.ok(result);
