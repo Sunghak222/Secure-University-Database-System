@@ -155,7 +155,6 @@ async function loadDisciplinaryRecords(studentId) {
             row.innerHTML = `
                 <td>${escapeHTML(record.date)}</td>
                 <td>${escapeHTML(record.descriptions)}</td>
-                <td>Recorded</td>
             `;
             tableBody.appendChild(row);
         });

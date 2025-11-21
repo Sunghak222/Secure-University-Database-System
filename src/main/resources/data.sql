@@ -28,10 +28,10 @@ VALUES
         'Mother'
     ),
     (
-        'abc', 'yyy', 'M',
+        'Chan', 'Leon', 'M',
         'A1234547',
         '13 Harbour Road, Wanchai',
-        'aaa.lee@example.com',
+        'leon.chan@example.com',
         '+85291256789',
         2025,
         1,
@@ -135,7 +135,7 @@ VALUES
  NULL, 1, NULL, TRUE),
 
 -- Student login (linked to student.id = 2)
-('aaa.lee@example.com',
+('leon.chan@example.com',
  '$2a$12$iiY/q0c4K122ovmHWP2u4Ogudf.QoSsG2o0e1zXyTVSPDbEnB7WQO',
  'STUDENT',
  NULL, 2, NULL, TRUE),
