@@ -1,6 +1,5 @@
 package hk.polyu.comp.project3335.securedb.model;
 
-import hk.polyu.comp.project3335.securedb.config.AESEncryptConverter;
 import jakarta.persistence.*;
 
 
