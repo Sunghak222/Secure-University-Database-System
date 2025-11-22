@@ -19,3 +19,6 @@ mysql -u root -p
 - URL: `jdbc:mysql://127.0.0.1:3306/securedb?useSSL=false&allowPublicKeyRetrieval=true`
 - USER: `comp3335`
 - PASS: `secure_password`
+
+### IMPORTANT
+Every execution of SecuredbApplication.java, you should create a new database.
