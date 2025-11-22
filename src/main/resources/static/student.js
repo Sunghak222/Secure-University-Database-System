@@ -50,9 +50,6 @@ async function loadStudentData() {
         
         // Store current student data for edit mode
         currentStudentData = student;
-        
-        console.log('Student data fetched:', student);
-        console.log('Student ID:', student.id);
 
         // Populate personal info
         document.getElementById('id').textContent = student.id || '';
@@ -68,9 +65,7 @@ async function loadStudentData() {
         document.getElementById('guardian_relation').textContent = student.guardianRelation || '';
 
         // Load grades and disciplinary records using the student ID from the fetched data
-        console.log('About to load grades with ID:', student.id);
         await loadGrades(student.id);
-        console.log('About to load disciplinary records with ID:', student.id);
         await loadDisciplinaryRecords(student.id);
 
     } catch (err) {
@@ -80,14 +75,12 @@ async function loadStudentData() {
 }
 
 async function loadGrades(studentId) {
-    console.log('loadGrades called with studentId:', studentId);
     try {
         // Fetch courses first to map course IDs to names
         const coursesRes = await fetch('/api/courses', {
             headers: getAuthHeaders()
         });
         const courses = coursesRes.ok ? await coursesRes.json() : [];
-        console.log('Courses fetched:', courses);
         const courseMap = {};
         courses.forEach(c => {
             courseMap[c.id] = c.code + ' - ' + c.courseName;
@@ -103,7 +96,6 @@ async function loadGrades(studentId) {
         }
         
         const grades = await res.json();
-        console.log('Grades fetched:', grades);
         const tableBody = document.getElementById('grades_table');
         tableBody.innerHTML = '';
         
@@ -129,7 +121,6 @@ async function loadGrades(studentId) {
 }
 
 async function loadDisciplinaryRecords(studentId) {
-    console.log('loadDisciplinaryRecords called with studentId:', studentId);
     try {
         const res = await fetch(`/api/disciplinary-records/${studentId}`, {
             headers: getAuthHeaders()
@@ -141,7 +132,6 @@ async function loadDisciplinaryRecords(studentId) {
         }
         
         const records = await res.json();
-        console.log('Disciplinary records fetched:', records);
         const tableBody = document.getElementById('disciplinary_table');
         tableBody.innerHTML = '';
         

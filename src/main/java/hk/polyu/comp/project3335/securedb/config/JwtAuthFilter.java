@@ -5,6 +5,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +21,7 @@ import java.util.List;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
 
     public JwtAuthFilter(JwtUtil jwtUtil) {   // Changed
         this.jwtUtil = jwtUtil;
@@ -32,17 +35,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        // Changed: Must start with Bearer
+        // Must start with Bearer
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         try {
-            // Changed: Extract token and trim any whitespace
+            // Extract token and trim any whitespace
             String token = authHeader.substring(7).trim();
 
             if (!jwtUtil.validate(token)) {
+                logger.warn("Invalid token access attempt from IP {} at {}", request.getRemoteAddr(), request.getRequestURI());
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -50,7 +54,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String email = jwtUtil.getEmail(token);
             String role = jwtUtil.getRole(token);
 
-            // Changed: Create authentication object
+            // Create authentication object
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             email,
@@ -65,7 +69,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             // Changed: Put into context
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception e) {
-            System.err.println("JWT validation error: " + e.getMessage());
+            logger.error("Error during token validation: {}", e.getMessage());
             e.printStackTrace();
         }
 

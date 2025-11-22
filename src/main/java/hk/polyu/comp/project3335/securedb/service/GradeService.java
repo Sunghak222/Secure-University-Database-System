@@ -5,6 +5,8 @@ import hk.polyu.comp.project3335.securedb.model.Grade;
 import hk.polyu.comp.project3335.securedb.repository.GradeRepository;
 import hk.polyu.comp.project3335.securedb.repository.StudentRepository;
 import hk.polyu.comp.project3335.securedb.repository.CourseRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ public class GradeService {
     private final GradeRepository gradeRepository;
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
+    private static final Logger logger = LoggerFactory.getLogger(GradeService.class);
 
     @Value("${app.crypto.key}")
     private String cryptoKey;
@@ -29,6 +32,8 @@ public class GradeService {
 
     @Transactional
     public void create(Long studentId, Long courseId, String term, String grade, String comments) {
+        logger.info("Grade create requested: studentId={}, courseId={}", studentId, courseId);
+
         // Validate that student exists
         if (!studentRepository.existsById(studentId)) {
             throw new IllegalArgumentException("Student with ID " + studentId + " does not exist");
@@ -50,6 +55,7 @@ public class GradeService {
     }
     @Transactional
     public void update(Long id, String term, String grade, String comments) {
+        logger.info("Grade update requested: gradeId={}", id);
 
         Grade existing = gradeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Grade not found"));
@@ -67,6 +73,8 @@ public class GradeService {
     }
 
     public void delete(Long id) {
+        logger.warn("Grade delete requested: gradeId={}", id);
+
         if (!gradeRepository.existsById(id)) {
             throw new IllegalArgumentException("Grade not found");
         }

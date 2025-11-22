@@ -46,7 +46,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             }
             if (data.staffId !== null) {
                 localStorage.setItem('userId', data.staffId);
-}
+            }
             
             // Redirect based on role
             const safeRole = data.role.toLowerCase();

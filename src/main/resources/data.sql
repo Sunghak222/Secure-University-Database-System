@@ -1,5 +1,23 @@
 -- AI Generated
 
+
+--attack1
+    -- admin@example.com' OR '1'='1
+    -- ' OR '1'='1
+
+--attack2: student search other student's info
+-- fetch('/api/students/2/grades', {
+--       headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+--     }).then(r => r.status).then(console.log);
+
+--attack3: student calls ARO's API
+-- fetch('/api/grades/all', {
+--       headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+--     }).then(r => r.status).then(console.log);
+
+--attack4: XSS
+-- <script>alert("hacked")</script>
+
 ------------------------------------
 -- GUARDIANS
 ------------------------------------
@@ -22,18 +40,18 @@ INSERT INTO students (
 VALUES
     (
         'Lee', 'Jason', 'M',
-        AES_ENCRYPT('A1234567', UNHEX(SHA2('YOUR_SECRET_KEY',512))),   -- Changed
-        AES_ENCRYPT('12 Harbour Road, Wanchai', UNHEX(SHA2('YOUR_SECRET_KEY',512))), -- Changed
+        AES_ENCRYPT('A1234567', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
+        AES_ENCRYPT('12 Harbour Road, Wanchai', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
         'jason.lee@example.com',
-        AES_ENCRYPT('+85291234567', UNHEX(SHA2('YOUR_SECRET_KEY',512))), -- Changed
+        AES_ENCRYPT('+85291234567', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
         2025, 1, 'Mother'
     ),
     (
         'abc', 'yyy', 'M',
-        AES_ENCRYPT('A1234547', UNHEX(SHA2('YOUR_SECRET_KEY',512))),  -- Changed
-        AES_ENCRYPT('13 Harbour Road, Wanchai', UNHEX(SHA2('YOUR_SECRET_KEY',512))), -- Changed
+        AES_ENCRYPT('A1234547', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
+        AES_ENCRYPT('13 Harbour Road, Wanchai', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
         'aaa.lee@example.com',
-        AES_ENCRYPT('+85291256789', UNHEX(SHA2('YOUR_SECRET_KEY',512))), -- Changed
+        AES_ENCRYPT('+85291256789', UNHEX(SHA2('YOUR_SECRET_KEY',512))),
         2025, 1, 'Mother'
     );
 

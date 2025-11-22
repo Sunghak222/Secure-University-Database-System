@@ -4,6 +4,8 @@ import hk.polyu.comp.project3335.securedb.Dto.StudentDecryptedDto;
 import hk.polyu.comp.project3335.securedb.Dto.StudentDto.UpdateStudentDto;
 import hk.polyu.comp.project3335.securedb.model.Student;
 import hk.polyu.comp.project3335.securedb.repository.StudentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     @Value("${app.crypto.key}")
     private String cryptoKey;
@@ -29,25 +32,27 @@ public class StudentService {
     }
 
     public Optional<StudentDecryptedDto> getOneById(Long id) {
+        logger.debug("Fetching student by ID {}", id);
         return studentRepository.findDecryptedById(id, cryptoKey)
                 .map(StudentDecryptedDto::from);
     }
 
     //update unencrypted information
-    public Optional<StudentDecryptedDto> updateOneById(Long id, UpdateStudentDto updated) {
-        return studentRepository.findById(id).map(student -> {
-            if (updated.getFirstName() != null) student.setFirstName(updated.getFirstName());
-            if (updated.getLastName() != null) student.setLastName(updated.getLastName());
-            if (updated.getGender() != null) student.setGender(updated.getGender());
-            if (updated.getEmail() != null) student.setEmail(updated.getEmail());
-            if (updated.getEnrollmentYear() != null) student.setEnrollmentYear(updated.getEnrollmentYear());
-            if (updated.getGuardianRelation() != null) student.setGuardianRelation(updated.getGuardianRelation());
-
-            studentRepository.save(student);
-
-            return getOneById(id).orElse(null);
-        });
-    }
+//    public Optional<StudentDecryptedDto> updateOneById(Long id, UpdateStudentDto updated) {
+//        logger.info("Updating student info. ID={}", id);
+//        return studentRepository.findById(id).map(student -> {
+//            if (updated.getFirstName() != null) student.setFirstName(updated.getFirstName());
+//            if (updated.getLastName() != null) student.setLastName(updated.getLastName());
+//            if (updated.getGender() != null) student.setGender(updated.getGender());
+//            if (updated.getEmail() != null) student.setEmail(updated.getEmail());
+//            if (updated.getEnrollmentYear() != null) student.setEnrollmentYear(updated.getEnrollmentYear());
+//            if (updated.getGuardianRelation() != null) student.setGuardianRelation(updated.getGuardianRelation());
+//
+//            studentRepository.save(student);
+//
+//            return getOneById(id).orElse(null);
+//        });
+//    }
 
     public boolean isChildOfGuardian(Long studentId, Long guardianId) {
         return studentRepository.findById(studentId)
@@ -62,6 +67,7 @@ public class StudentService {
                 .toList();
     }
     public Optional<StudentDecryptedDto> update(Long id, UpdateStudentDto dto) {
+        logger.info("Updating student info. ID={}", id);
         studentRepository.updateEncrypted(
                 id,
                 dto.getLastName(),

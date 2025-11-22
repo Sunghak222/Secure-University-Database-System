@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import hk.polyu.comp.project3335.securedb.service.AuthUserService;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthUserController {
@@ -25,7 +27,7 @@ public class AuthUserController {
         LoginResult result = authUserService.login(dto.getEmail(), dto.getPassword());
 
         if (result == null) {
-            return ResponseEntity.status(401).body("Invalid email or password");
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid email or password"));
         }
 
         return ResponseEntity.ok(result);
